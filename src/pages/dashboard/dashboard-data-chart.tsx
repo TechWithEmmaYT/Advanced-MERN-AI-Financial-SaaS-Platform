@@ -1,0 +1,189 @@
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { EmptyState } from "@/components/empty-state";
+import { TrendingUpIcon, TrendingDownIcon } from "lucide-react";
+import { format } from "date-fns";
+
+interface PropsType {
+  data?: {
+    date: string;
+    income: number;
+    expenses: number;
+  }[];
+}
+
+const COLORS = ["var(--primary)", "var(--color-chart-1)"]
+
+
+const chartConfig = {
+  income: {
+    label: "Income",
+    color: COLORS[0],
+  },
+  expenses: {
+    label: "Expenses",
+    color: COLORS[1]
+  },
+} satisfies ChartConfig;
+
+
+const DashboardDataChart: React.FC<PropsType> = (props) => {
+  const { data = [] } = props;
+  const isMobile = useIsMobile();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setTimeRange] = React.useState("90d");
+
+  React.useEffect(() => {
+    if (isMobile) {
+      setTimeRange("7d");
+    }
+  }, [isMobile]);
+
+  
+  // const CustomTooltip = ({ active, payload }: any) => {
+  //     if (active && payload && payload.length) {
+  //       const data = payload[0].payload;
+  //       return (
+  //         <div className="bg-white p-3 rounded-lg shadow-md border border-gray-100">
+  //           <div className="flex items-center gap-2 mb-1">
+  //             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: data.color }}></div>
+  //             <p className="font-medium">{data.name}</p>
+  //           </div>
+  //           <p className="text-muted-foreground text-sm">${data.value.toLocaleString()}</p>
+  //           <p className="text-sm font-medium">{data.percentage}% of total</p>
+  //         </div>
+  //       );
+  //     }
+  //     return null;
+  //   };
+  
+
+  return (
+    <Card className="!shadow-none border-1 border-gray-100 !pt-0">
+     <CardHeader className="flex flex-col items-stretch !space-y-0 border-b border-gray-100 !p-0 pr-1 sm:flex-row">
+      <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-0 sm:py-0">
+        <CardTitle className="text-lg">Transaction Overview</CardTitle>
+        <CardDescription>
+          <span>Showing total transactions for the last 3 months</span>
+        </CardDescription>
+        </div>
+        <div className="flex">
+          {["income", "expenses"].map((key) => {
+            const chart = key as keyof typeof chartConfig
+            return (
+              <div
+                key={chart}
+                className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-center even:border-l 
+                sm:border-l border-gray-100 sm:px-4 sm:py-6 min-w-36"
+              >
+                <span className="w-full block text-xs text-muted-foreground">
+                 No of {chartConfig[chart].label}
+                </span>
+                <span className="flex items-center justify-center gap-2 text-lg font-semibold leading-none sm:text-3xl">
+                  {key === "income" ? <TrendingUpIcon className="size-3 ml-2 text-primary" /> : <TrendingDownIcon className="size-3 ml-2 text-destructive" />}
+                  {data.filter(item => key === "income" ? item.income > 0 : item.expenses > 0).length}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+      </CardHeader>
+      <CardContent className="px-2 pt-2 sm:px-6 sm:pt-2 h-[300px]">
+        {data?.length === 0 ? (
+          <EmptyState
+          title="No transaction data"
+          description="There are no transactions recorded for this period."
+        />
+        ) : (
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-auto h-[300px] w-full"
+          >
+            <AreaChart data={data}>
+              <defs>
+                <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor={COLORS[0]}
+                    stopOpacity={1.0}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={COLORS[0]}
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+                <linearGradient id="expensesGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor={COLORS[1]}
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={COLORS[1]}
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                minTickGap={32}
+                tickFormatter={(value) => format(new Date(value), isMobile ? "MMM d" : "MMMM d") }
+              />
+              <ChartTooltip
+                cursor={false}
+                defaultIndex={isMobile ? -1 : 10}
+                content={
+                  <ChartTooltipContent
+                    labelFormatter={(value) => format(new Date(value), isMobile ? "MMM d" : "MMMM d")}
+                    indicator="dot"
+                    
+                  />
+                }
+              />
+              <Area
+                dataKey="expenses"
+                stackId="b"
+                type="step"
+                fill="url(#expensesGradient)"
+                stroke={COLORS[1]}
+                className="drop-shadow-sm"
+              />
+              <Area
+                dataKey="income"
+                stackId="b"
+                type="step"
+                fill="url(#incomeGradient)"
+                stroke={COLORS[0]}
+              />
+            <ChartLegend content={<ChartLegendContent  verticalAlign="top"/>} />
+            </AreaChart>
+          </ChartContainer>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export default DashboardDataChart;
