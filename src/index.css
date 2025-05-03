@@ -7,6 +7,10 @@ body {
   background-color: #f6f7f9 !important;
 }
 
+.recurring-control button span{
+  text-transform: capitalize !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

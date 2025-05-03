@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+import-transaction-dialog
 
 # Editor directories and files
 .vscode/*
