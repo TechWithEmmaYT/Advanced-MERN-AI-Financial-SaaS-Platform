@@ -19,6 +19,7 @@
     BANK_TRANSFER: "BANK_TRANSFER",
     MOBILE_PAYMENT: "MOBILE_PAYMENT",
     CASH: "CASH",
+    AUTO_DEBIT: "AUTO_DEBIT",
     OTHER: "OTHER",
   } as const
 
@@ -27,12 +28,12 @@
     { value: PAYMENT_METHODS_ENUM.CASH, label: "Cash" },
     { value: PAYMENT_METHODS_ENUM.BANK_TRANSFER, label: "Bank Transfer" },
     { value: PAYMENT_METHODS_ENUM.MOBILE_PAYMENT, label: "Mobile Payment" },
+    {value: PAYMENT_METHODS_ENUM.AUTO_DEBIT, label: "Auto Debit"},
     { value: PAYMENT_METHODS_ENUM.OTHER, label: "Other" },
   ];
 
 
 export const _TRANSACTION_FREQUENCY = {
-  ONE_TIME: "ONE_TIME",
   DAILY: "DAILY",
   WEEKLY: "WEEKLY",
   MONTHLY: "MONTHLY",

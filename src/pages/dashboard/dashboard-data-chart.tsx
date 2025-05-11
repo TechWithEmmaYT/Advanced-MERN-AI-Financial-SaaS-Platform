@@ -30,7 +30,7 @@ interface PropsType {
   dateRange?: DateRangeType;
 }
 
-const COLORS = ["var(--primary)", "var(--color-chart-1)"]
+const COLORS = ["var(--primary)", "var(--color-destructive)"]
 const TRANSACTION_TYPES = ["income","expenses"]
 
 

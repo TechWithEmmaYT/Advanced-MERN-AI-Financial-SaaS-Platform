@@ -2,6 +2,7 @@ import {
   ArrowUpDown,
   CircleDot,
   Copy,
+  LucideIcon,
   MoreHorizontal,
   Pencil,
   RefreshCw,
@@ -37,8 +38,17 @@ export type TransactionType = {
   type: _TransactionType;
   category: string;
   status?: TransactionStatusType;
-  frequency: TransactionFrequencyType;
+  frequency: TransactionFrequencyType | null;
   nextOccurrence?: Date;
+};
+
+type FrequencyInfo = {
+  label: string;
+  icon: LucideIcon;
+};
+type FrequencyMapType = {
+  [key: string]: FrequencyInfo;
+  DEFAULT: FrequencyInfo;
 };
 
 export const transactionColumns: ColumnDef<TransactionType>[] = [
@@ -131,7 +141,9 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       return (
         <div
           className={`text-right font-medium ${
-            type === _TRANSACTION_TYPE.INCOME ? "text-green-600" : "text-destructive"
+            type === _TRANSACTION_TYPE.INCOME
+              ? "text-green-600"
+              : "text-destructive"
           }`}
         >
           {type === _TRANSACTION_TYPE.EXPENSE ? "-" : "+"}
@@ -142,28 +154,40 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
   },
   {
     accessorKey: "frequency",
-    header: "Frequently",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Frequently
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const frequency = row.getValue("frequency");
       const nextDate = row.original?.nextOccurrence;
+      const isRecurring = row.original?.isRecurring;
 
-      const frequencyMap = {
-        ONE_TIME: { label: "One-time", icon: CircleDot },
-        DAILY: { label: "Daily", icon: RefreshCw },
-        WEEKLY: { label: "Weekly", icon: RefreshCw },
-        MONTHLY: { label: "Monthly", icon: RefreshCw },
-        YEARLY: { label: "Yearly", icon: RefreshCw },
-      };
+      const frequencyMap: FrequencyMapType = isRecurring
+        ? {
+          [_TRANSACTION_FREQUENCY.DAILY]: { label: "Daily", icon: RefreshCw },
+          [_TRANSACTION_FREQUENCY.WEEKLY]: { label: "Weekly", icon: RefreshCw },
+          [_TRANSACTION_FREQUENCY.MONTHLY]: { label: "Monthly", icon: RefreshCw },
+          [_TRANSACTION_FREQUENCY.YEARLY]: { label: "Yearly", icon: RefreshCw },
+          DEFAULT: { label: "One-time", icon: CircleDot } // Fallback
+        }
+        : { DEFAULT: { label: "One-time", icon: CircleDot } };
 
-      const { label, icon: Icon } =
-        frequencyMap[frequency as keyof typeof frequencyMap];
+        const frequencyKey = isRecurring ? (frequency as string) : "DEFAULT";
+        const frequencyInfo = frequencyMap?.[frequencyKey] || frequencyMap.DEFAULT;
+        const { label, icon: Icon } = frequencyInfo;
 
       return (
         <div className="flex items-center gap-2">
           <Icon className="h-4 w-4 text-muted-foreground" />
           <div className="flex flex-col">
             <span>{label}</span>
-            {nextDate && frequency !== _TRANSACTION_FREQUENCY.ONE_TIME && (
+            {nextDate && isRecurring && (
               <span className="text-xs text-muted-foreground">
                 Next: {format(nextDate, "MMM dd")}
               </span>
@@ -178,7 +202,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const isRecurring = row.original.isRecurring
+      const isRecurring = row.original.isRecurring;
 
       return (
         <DropdownMenu>
