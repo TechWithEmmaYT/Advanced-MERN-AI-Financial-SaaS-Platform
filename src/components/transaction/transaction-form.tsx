@@ -415,7 +415,7 @@ const TransactionForm = () => {
             />
           </div>
 
-          <div className="sticky bottom-0 bg-white pb-2">
+          <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
             <Button type="submit" className="w-full" disabled={isScanning}>
               Save
             </Button>

@@ -13,12 +13,21 @@
     { value: "other", label: "Other" },
   ];
 
+  
+  export const PAYMENT_METHODS_ENUM = {
+    CARD: "CARD",
+    BANK_TRANSFER: "BANK_TRANSFER",
+    MOBILE_PAYMENT: "MOBILE_PAYMENT",
+    CASH: "CASH",
+    OTHER: "OTHER",
+  } as const
+
   export const PAYMENT_METHODS = [
-    { value: "card", label: "Credit/Debit Card" },
-    { value: "cash", label: "Cash" },
-    { value: "transfer", label: "Bank Transfer" },
-    { value: "mobile", label: "Mobile Payment" },
-    { value: "other", label: "Other" },
+    { value: PAYMENT_METHODS_ENUM.CARD, label: "Credit/Debit Card" },
+    { value: PAYMENT_METHODS_ENUM.CASH, label: "Cash" },
+    { value: PAYMENT_METHODS_ENUM.BANK_TRANSFER, label: "Bank Transfer" },
+    { value: PAYMENT_METHODS_ENUM.MOBILE_PAYMENT, label: "Mobile Payment" },
+    { value: PAYMENT_METHODS_ENUM.OTHER, label: "Other" },
   ];
 
 

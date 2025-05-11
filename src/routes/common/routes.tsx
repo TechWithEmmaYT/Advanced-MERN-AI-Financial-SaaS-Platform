@@ -15,7 +15,7 @@ export const authenticationRoutePaths = [
 ];
 
 export const protectedRoutePaths = [
-  { path: PROTECTED_ROUTES.DASHBOARD, element: <Dashboard /> },
+  { path: PROTECTED_ROUTES.OVERVIEW, element: <Dashboard /> },
   { path: PROTECTED_ROUTES.TRANSACTIONS, element: <Transactions /> },
   { path: PROTECTED_ROUTES.REPORTS, element: <Reports /> },
   { path: PROTECTED_ROUTES.SETTINGS, 

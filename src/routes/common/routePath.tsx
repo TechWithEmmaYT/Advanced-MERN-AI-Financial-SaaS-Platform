@@ -8,7 +8,7 @@ export const isAuthRoute = (pathname: string): boolean => {
   };
   
   export const PROTECTED_ROUTES = {
-    DASHBOARD: "/dashboard",
+    OVERVIEW: "/overview",
     TRANSACTIONS: "/transactions",
     REPORTS: "/reports",
     SETTINGS: "/settings",

@@ -8,7 +8,6 @@ export type ReportType = {
   period: string;
   sentDate: string | Date;
   status: ReportStatusType;
-  fileUrl?: string;
   recipientEmail?: string;
 };
 
@@ -16,10 +15,11 @@ export const reportColumns: ColumnDef<ReportType>[] = [
   {
     accessorKey: "period",
     header: "Report Period",
+    size: 150,
     cell: ({ row }) => {
       const period = row.getValue("period") as string;
       return (
-        <div className="flex items-center gap-2 lg:w-20">
+        <div className="flex items-center gap-2 lg:!w-10">
           <Clock className="h-3.5 w-3.5 opacity-50 shrink-0" />
           <span>{period}</span>
         </div>
@@ -29,6 +29,7 @@ export const reportColumns: ColumnDef<ReportType>[] = [
   {
     accessorKey: "sentDate",
     header: "Sent Date",
+    size: 100,
     cell: ({ row }) => {
       const date = new Date(row.original.sentDate);
       return date.toLocaleDateString();
@@ -37,6 +38,7 @@ export const reportColumns: ColumnDef<ReportType>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    size: 100,
     cell: ({ row }) => {
       const status = row.getValue("status") as string;
       const statusStyles = {
@@ -60,6 +62,7 @@ export const reportColumns: ColumnDef<ReportType>[] = [
   {
     id: "actions",
     header: "Actions",
+    size: 100,
     cell: () => (
       <div className="flex gap-1">
         <Button size="sm" variant="outline" className="font-normal">
@@ -70,16 +73,13 @@ export const reportColumns: ColumnDef<ReportType>[] = [
       </div>
     ),
   },
+
   {
-    accessorKey: "fileUrl",
+    id: "-",
     header: "",
   },
   {
-    accessorKey: "recipientEmail",
+    id: "-",
     header: "",
-  },
-  {
-    accessorKey: "note",
-    header: "",
-  },
+  }
 ];

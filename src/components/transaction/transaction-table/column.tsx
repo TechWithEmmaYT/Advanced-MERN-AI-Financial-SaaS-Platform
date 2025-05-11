@@ -33,6 +33,7 @@ export type TransactionType = {
   date: Date;
   title: string;
   amount: number;
+  isRecurring: boolean;
   type: _TransactionType;
   category: string;
   status?: TransactionStatusType;
@@ -177,8 +178,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const transaction = row.original;
-      const isRecurring = transaction.frequency !== _TRANSACTION_FREQUENCY.ONE_TIME;
+      const isRecurring = row.original.isRecurring
 
       return (
         <DropdownMenu>

@@ -17,7 +17,7 @@ const AddTransactionDrawer = () => {
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="!cursor-pointer">
+        <Button className="!cursor-pointer !text-white">
           <PlusIcon className="h-4 w-4" />
           Add Transaction
         </Button>

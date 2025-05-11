@@ -19,12 +19,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { Switch } from "@/components/ui/switch";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  frequency: z.enum(["daily", "weekly", "monthly", "yearly"]),
-  selectedDay: z.enum(["mon", "tue", "wed", "thu", "fri", "sat", "sun"]).optional(),
+  email: z.string(),
+  frequency: z.enum(["MONTHLY"]),
+  isEnabled: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -35,8 +35,8 @@ const ScheduleReportForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      frequency: "monthly",
-      selectedDay: "mon", // default to Monday
+      isEnabled: true,
+      frequency: "MONTHLY",
     },
   });
 
@@ -47,39 +47,10 @@ const ScheduleReportForm = () => {
 
   // Get summary text based on form values
   const getScheduleSummary = () => {
-    const frequency = form.watch("frequency");
-    const selectedDay = form.watch("selectedDay");
-
-    let summary = "Report will be sent ";
-
-    switch (frequency) {
-      case "daily":
-        summary += "every day";
-        break;
-      case "weekly":
-        if (selectedDay) {
-          // Convert day abbreviation to full day name
-          const dayNames: Record<string, string> = {
-            mon: "Monday",
-            tue: "Tuesday",
-            wed: "Wednesday",
-            thu: "Thursday",
-            fri: "Friday",
-            sat: "Saturday",
-            sun: "Sunday",
-          };
-          summary += `every ${dayNames[selectedDay]}`;
-        }
-        break;
-      case "monthly":
-        summary += "once a month on the last day";
-        break;
-      case "yearly":
-        summary += "once a year";
-        break;
+    if (!form.watch("isEnabled")) {
+      return "Reports are currently deactivated";
     }
-
-    return summary;
+    return "Report will be sent once a month on the 1st day of the next month";
   };
 
   return (
@@ -87,112 +58,105 @@ const ScheduleReportForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="w-full space-y-6 flex-1 px-4">
-            {/* Email Field */}
+            {/* Enable/Disable Switch */}
             <FormField
               control={form.control}
-              name="email"
+              name="isEnabled"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <div className="flex items-center space-x-2">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <FormControl>
-                      <Input
-                        placeholder="Enter email address"
-                        {...field}
-                        className="flex-1"
-                      />
-                    </FormControl>
+                <FormItem
+                  className="flex flex-row items-center justify-between 
+                rounded-lg border p-4"
+                >
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Monthly Reports</FormLabel>
+                    <p className="text-sm text-muted-foreground">
+                    {form.watch("isEnabled") ? "Reports activated" : "Reports deactivated"}
+                    </p>
                   </div>
-                  <FormMessage />
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
 
-            {/* Frequency */}
-            <FormField
-              control={form.control}
-              name="frequency"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Repeat On</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl className="w-full">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select frequency" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                      <SelectItem value="yearly">Yearly</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Day Selection - Only show for weekly */}
-            {form.getValues().frequency === "weekly" && (
+            <div className="relative space-y-6">
+              {/* Email Field */}
               <FormField
                 control={form.control}
-                name="selectedDay"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select Day</FormLabel>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { value: "mon", label: "Mon" },
-                        { value: "tue", label: "Tue" },
-                        { value: "wed", label: "Wed" },
-                        { value: "thu", label: "Thu" },
-                        { value: "fri", label: "Fri" },
-                        { value: "sat", label: "Sat" },
-                        { value: "sun", label: "Sun" },
-                      ].map((day) => {
-                        const isSelected = field.value === day.value;
-                        return (
-                          <Button
-                            type="button"
-                            key={day.value}
-                            variant={isSelected ? "default" : "outline"}
-                            className={cn(
-                              "rounded-full !cursor-pointer !text-[13px] !font-normal h-10 w-10 p-0",
-                              isSelected && "bg-primary text-primary-foreground"
-                            )}
-                            onClick={() => {
-                              field.onChange(day.value); // Set only one day
-                            }}
-                          >
-                            {day.label}
-                          </Button>
-                        );
-                      })}
+                    <FormLabel>Email</FormLabel>
+                    <div className="flex items-center space-x-2">
+                      <Mail className="h-4 w-4 text-muted-foreground" />
+                      <FormControl>
+                        <Input
+                          placeholder="Enter email address"
+                          disabled={true}
+                          {...field}
+                          className="flex-1"
+                        />
+                      </FormControl>
                     </div>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-            )}
 
-            {/* Schedule Summary */}
-            <div className="bg-muted p-4 rounded-lg">
-              <h3 className="font-medium mb-2">Schedule Summary</h3>
-              <p className="text-sm text-muted-foreground">
-                {getScheduleSummary()}
-              </p>
+              {/* Frequency */}
+              <FormField
+                control={form.control}
+                name="frequency"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Repeat On</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      disabled={true}
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select frequency" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="MONTHLY">Monthly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Disabled overlay */}
+              {!form.watch("isEnabled") && (
+                <div className="absolute inset-0 bg-white/50 dark:bg-black/50 z-10" />
+              )}
             </div>
 
-            {/* Submit Button */}
-            <div className="sticky bottom-0 py-2 bg-white">
-              <Button type="submit" className="w-full">
-                Set Schedule
-              </Button>
-            </div>
+              {/* Schedule Summary */}
+              <div className="bg-muted p-4 rounded-lg">
+                <h3 className="font-medium mb-2">Schedule Summary</h3>
+                <p className="text-sm text-muted-foreground">
+                  {getScheduleSummary()}
+                </p>
+              </div>
+
+
+             {/* Submit Button */}
+             <div className="sticky bottom-0 py-2">
+                <Button
+                  type="submit"
+                  className="w-full text-white"
+                >
+                  Save changes
+                </Button>
+              </div>
           </div>
         </form>
       </Form>

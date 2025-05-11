@@ -74,7 +74,7 @@ const SummaryCard: FC<PropsType> = ({
               ) : (
                 <TrendingDownIcon className="size-3 text-red-500" />
               )}
-              <span> from {dateRange}</span>
+              <span>{dateRange}</span>
             </>
           )}
         </p>

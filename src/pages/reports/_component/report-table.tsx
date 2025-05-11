@@ -8,6 +8,7 @@ const ReportTable = () => {
         data={REPORT_DATA}
         columns={reportColumns}
         searchPlaceholder="Search reports..."
+        className="[&_td]:!w-[5%]"
       />
   )
 }

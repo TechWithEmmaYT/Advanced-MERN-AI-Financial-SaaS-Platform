@@ -17,18 +17,18 @@ const ScheduleReportDrawer = () => {
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="!cursor-pointer">
-          <CalendarIcon className="h-4 w-4 mr-2" />
-          <span>Set Schedule Report</span>
+        <Button className="!cursor-pointer !px-6 !text-white">
+          <CalendarIcon className="h-4 w-4" />
+          <span>Report Settings</span>
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader>
           <DrawerTitle className="text-xl font-semibold">
-            Schedule Report
+            Report Settings
           </DrawerTitle>
           <DrawerDescription className="-mt-1">
-            Configure when financial reports should be sent
+            Enable or disable monthly financial report emails
           </DrawerDescription>
         </DrawerHeader>
 

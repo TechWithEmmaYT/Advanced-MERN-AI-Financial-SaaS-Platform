@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 import-transaction-dialog
+_billing.tsx
 
 # Editor directories and files
 .vscode/*

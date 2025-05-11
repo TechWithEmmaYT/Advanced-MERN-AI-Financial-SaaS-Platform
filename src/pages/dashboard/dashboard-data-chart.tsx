@@ -1,4 +1,5 @@
 import * as React from "react";
+import { format } from "date-fns";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
@@ -18,7 +19,7 @@ import {
 } from "@/components/ui/chart";
 import { EmptyState } from "@/components/empty-state";
 import { TrendingUpIcon, TrendingDownIcon } from "lucide-react";
-import { format } from "date-fns";
+import { DateRangeType } from "@/components/date-range-select";
 
 interface PropsType {
   data?: {
@@ -26,9 +27,11 @@ interface PropsType {
     income: number;
     expenses: number;
   }[];
+  dateRange?: DateRangeType;
 }
 
 const COLORS = ["var(--primary)", "var(--color-chart-1)"]
+const TRANSACTION_TYPES = ["income","expenses"]
 
 
 const chartConfig = {
@@ -44,7 +47,7 @@ const chartConfig = {
 
 
 const DashboardDataChart: React.FC<PropsType> = (props) => {
-  const { data = [] } = props;
+  const { data = [], dateRange } = props;
   const isMobile = useIsMobile();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setTimeRange] = React.useState("90d");
@@ -72,32 +75,32 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
   //     }
   //     return null;
   //   };
-  
 
   return (
-    <Card className="!shadow-none border-1 border-gray-100 !pt-0">
-     <CardHeader className="flex flex-col items-stretch !space-y-0 border-b border-gray-100 !p-0 pr-1 sm:flex-row">
+    <Card className="!shadow-none border-1 border-gray-100 dark:border-border !pt-0">
+     <CardHeader className="flex flex-col items-stretch !space-y-0 border-b border-gray-100
+      dark:border-border !p-0 pr-1 sm:flex-row">
       <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-0 sm:py-0">
         <CardTitle className="text-lg">Transaction Overview</CardTitle>
         <CardDescription>
-          <span>Showing total transactions for the last 3 months</span>
+          <span>Showing total transactions {dateRange?.label}</span>
         </CardDescription>
         </div>
         <div className="flex">
-          {["income", "expenses"].map((key) => {
+          {TRANSACTION_TYPES.map((key) => {
             const chart = key as keyof typeof chartConfig
             return (
               <div
                 key={chart}
                 className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 text-center even:border-l 
-                sm:border-l border-gray-100 sm:px-4 sm:py-6 min-w-36"
+                sm:border-l border-gray-100 dark:border-border sm:px-4 sm:py-6 min-w-36"
               >
                 <span className="w-full block text-xs text-muted-foreground">
                  No of {chartConfig[chart].label}
                 </span>
                 <span className="flex items-center justify-center gap-2 text-lg font-semibold leading-none sm:text-3xl">
-                  {key === "income" ? <TrendingUpIcon className="size-3 ml-2 text-primary" /> : <TrendingDownIcon className="size-3 ml-2 text-destructive" />}
-                  {data.filter(item => key === "income" ? item.income > 0 : item.expenses > 0).length}
+                  {key === TRANSACTION_TYPES[0] ? <TrendingUpIcon className="size-3 ml-2 text-primary" /> : <TrendingDownIcon className="size-3 ml-2 text-destructive" />}
+                  {data.filter(item => key === TRANSACTION_TYPES[0] ? item.income > 0 : item.expenses > 0).length}
                 </span>
               </div>
             )

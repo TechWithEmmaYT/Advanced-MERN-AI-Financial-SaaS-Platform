@@ -51,7 +51,7 @@ const ImportTransactionModal = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-             https://techwithemma.gumroad.com
+             https://bitly.com/techwithemma
             </a>
           </p>
           <br />

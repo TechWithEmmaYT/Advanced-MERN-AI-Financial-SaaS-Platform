@@ -17,9 +17,10 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 
 export type DateRangeType = {
-  from: Date;
+  from: Date | null;
   to: Date | null;
   value?: string;
+  label: string;
 } | null;
 
 type DateRangePreset = {
@@ -42,6 +43,7 @@ const presets: DateRangePreset[] = [
       from: subDays(new Date(), 30),
       to: new Date(),
       value: "30days",
+      label: "for Past 30 Days",
     }),
   },
   {
@@ -51,6 +53,17 @@ const presets: DateRangePreset[] = [
       from: startOfMonth(subMonths(new Date(), 1)),
       to: startOfMonth(new Date()),
       value: "lastMonth",
+      label: "for Last Month",
+    }),
+  },
+  {
+    label: "Last 3 Months",
+    value: "last3Months",
+    getRange: () => ({
+      from: startOfMonth(subMonths(new Date(), 3)),
+      to: startOfMonth(new Date()),
+      value: "last3Months",
+      label: "for Past 3 Months",
     }),
   },
   {
@@ -60,6 +73,7 @@ const presets: DateRangePreset[] = [
       from: startOfYear(subYears(new Date(), 1)),
       to: startOfYear(new Date()),
       value: "lastYear",
+      label: "for Past Year",
     }),
   },
   {
@@ -69,6 +83,7 @@ const presets: DateRangePreset[] = [
       from: startOfMonth(new Date()),
       to: new Date(),
       value: "thisMonth",
+      label: "for This Month",
     }),
   },
   {
@@ -78,12 +93,19 @@ const presets: DateRangePreset[] = [
       from: startOfYear(new Date()),
       to: new Date(),
       value: "thisYear",
+      label: "for This Year",
+
     }),
   },
   {
     label: "All Time",
     value: "allTime",
-    getRange: () => null,
+    getRange: () => ({
+      from: null,
+      to: null,
+      value: "allTime",
+      label: "across All Time",
+    }),
   },
 ];
 
@@ -108,6 +130,7 @@ export const DateRangeSelect = ({
     if (!dateRange) {
       const defaultPreset = presets.find(p => p.value === defaultRange);
       if (defaultPreset) {
+        console.log(defaultPreset.getRange(),"defaultPreset.getRange()")
         setDateRange(defaultPreset.getRange());
       }
     }

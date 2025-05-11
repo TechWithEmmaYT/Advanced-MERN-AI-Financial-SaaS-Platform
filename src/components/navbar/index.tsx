@@ -7,14 +7,16 @@ import Logo from "../logo/logo";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent } from "../ui/sheet";
 import { UserNav } from "./user-nav";
+import LogoutDialog from "./logout-dialog";
 
 const Navbar = () => {
   const { pathname } = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
 
   const routes = [
     {
-      href: PROTECTED_ROUTES.DASHBOARD,
+      href: PROTECTED_ROUTES.OVERVIEW,
       label: "Overview",
     },
     {
@@ -32,8 +34,9 @@ const Navbar = () => {
   ];
 
   return (
+    <>
     <header className={cn("w-full px-4 py-3 pb-3 lg:px-14 bg-[#1a1e2a] text-white",
-      pathname === PROTECTED_ROUTES.DASHBOARD && "!pb-3"
+      pathname === PROTECTED_ROUTES.OVERVIEW && "!pb-3"
     )}>
       <div className="w-full flex h-14 max-w-[var(--max-width)] items-center mx-auto">
         <div className="w-full flex items-center justify-between">
@@ -104,11 +107,14 @@ const Navbar = () => {
           {/* {} */}
           {/* Right side - User actions */}
           <div className="flex items-center space-x-4">
-          <UserNav />
+          <UserNav onLogout={() => setIsLogoutDialogOpen(true)} />
           </div>
         </div>
       </div>
     </header>
+
+    <LogoutDialog isOpen={isLogoutDialogOpen} setIsOpen={setIsLogoutDialogOpen} />
+    </>
   );
 };
 
