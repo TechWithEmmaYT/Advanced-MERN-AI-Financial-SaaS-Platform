@@ -1,13 +1,14 @@
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
+  DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, XIcon } from "lucide-react";
 import { useState } from "react";
 import ScheduleReportForm from "./schedule-report-form";
 
@@ -23,13 +24,18 @@ const ScheduleReportDrawer = () => {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
-        <DrawerHeader>
-          <DrawerTitle className="text-xl font-semibold">
-            Report Settings
-          </DrawerTitle>
-          <DrawerDescription className="-mt-1">
-            Enable or disable monthly financial report emails
-          </DrawerDescription>
+        <DrawerHeader className="relative">
+          <div>
+            <DrawerTitle className="text-xl font-semibold">
+              Report Settings
+            </DrawerTitle>
+            <DrawerDescription className="-mt-1">
+              Enable or disable monthly financial report emails
+            </DrawerDescription>
+          </div>
+          <DrawerClose className="absolute top-4 right-4">
+            <XIcon className="h-5 w-5 !cursor-pointer" />
+          </DrawerClose>
         </DrawerHeader>
 
         <ScheduleReportForm />

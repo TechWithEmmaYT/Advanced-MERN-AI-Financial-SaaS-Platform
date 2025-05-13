@@ -27,8 +27,8 @@ const TransactionTable = () => {
           ],
         },
         {
-          key: "frequency",
-          label: "Frequency",
+          key: "frequently",
+          label: "Frequently",
           options: [
             { value: "RECURRING", label: "Recurring" },
             { value: "NON_RECURRING", label: "Non-Recurring" },
