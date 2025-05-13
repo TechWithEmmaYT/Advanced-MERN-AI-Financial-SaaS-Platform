@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ArrowUpDown,
   CircleDot,
@@ -28,6 +29,7 @@ import {
   _TransactionType,
 } from "@/constant";
 import { formatCurrency } from "@/lib/format-currency";
+import useEditTransactionDrawer from "@/hooks/use-edit-transaction-drawer";
 
 export type TransactionType = {
   id: string;
@@ -201,41 +203,47 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const isRecurring = row.original.isRecurring;
+    cell: ({ row }) => <ActionsCell row={row} />,
+  },
+];
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-44" align="end">
+// eslint-disable-next-line react-refresh/only-export-components
+const ActionsCell = ({ row }: { row: any }) => {
+  const isRecurring = row.original.isRecurring;
+  const transactionId = row.original.id;
+  const { onOpenDrawer } = useEditTransactionDrawer();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-44" align="end">
+        <DropdownMenuItem onClick={() => onOpenDrawer(transactionId)}>
+          <Pencil className="mr-1 h-4 w-4" />
+          Edit
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Copy className="mr-1 h-4 w-4" />
+          Duplicate
+        </DropdownMenuItem>
+        {isRecurring && (
+          <>
             <DropdownMenuItem>
-              <Pencil className="mr-1 h-4 w-4" />
-              Edit
+              <StopCircleIcon className="mr-1 h-4 w-4" />
+              Stop Recurring
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Copy className="mr-1 h-4 w-4" />
-              Duplicate
-            </DropdownMenuItem>
-            {isRecurring && (
-              <>
-                <DropdownMenuItem>
-                  <StopCircleIcon className="mr-1 h-4 w-4" />
-                  Stop Recurring
-                </DropdownMenuItem>
-              </>
-            )}
-            <DropdownMenuSeparator />
+          </>
+        )}
+          <DropdownMenuSeparator />
             <DropdownMenuItem className="!text-destructive">
               <Trash2 className="mr-1 h-4 w-4 !text-destructive" />
               Delete
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
+

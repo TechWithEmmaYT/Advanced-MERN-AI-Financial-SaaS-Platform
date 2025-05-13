@@ -235,7 +235,7 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
                         {...field}
                         disabled={isScanning}
                         onValueChange={(value) => field.onChange(value || "")}
-                        placeholder="0.00"
+                        placeholder="$0.00"
                         prefix="$"
                       />
                     </div>
@@ -272,7 +272,7 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Date</FormLabel>
-                  <Popover>
+                  <Popover modal={false}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -291,7 +291,8 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto p-0 !pointer-events-auto" 
+                    align="start">
                       <CalendarComponent
                         mode="single"
                         selected={field.value}
@@ -364,11 +365,13 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
                       className="cursor-pointer"
                       onCheckedChange={(checked) => {
                         field.onChange(checked);
-                        if (!checked) {
+                        if (checked) {
                           form.setValue(
                             "frequency",
                             _TRANSACTION_FREQUENCY.DAILY
                           );
+                        }else{
+                          form.setValue("frequency", null);
                         }
                       }}
                     />
@@ -436,7 +439,7 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
           </div>
 
           <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
-            <Button type="submit" className="w-full" disabled={isScanning}>
+            <Button type="submit" className="w-full !text-white" disabled={isScanning}>
               {isEdit ? "Update" : "Save"}
             </Button>
           </div>

@@ -1,15 +1,30 @@
-// import { create } from 'zustand';
+import { parseAsBoolean, parseAsString, useQueryState } from "nuqs";
 
-// interface EditTransactionDrawerStore {
-//   isOpen: boolean;
-//   transactionId: string | null;
-//   open: (transactionId: string) => void;
-//   close: () => void;
-// }
+const useEditTransactionDrawer = () => {
+  const [open, setOpen] = useQueryState(
+    "edit",
+    parseAsBoolean.withDefault(false)
+  );
+  const [transactionId, setTransactionId] = useQueryState(
+    "transactionId",
+    parseAsString.withDefault("")
+  );
+  const onOpenDrawer = (transactionId: string) => {
+    setTransactionId(transactionId);
+    setOpen(true);
+  };
 
-// export const useEditTransactionDrawer = create<EditTransactionDrawerStore>((set) => ({
-//   isOpen: false,
-//   transactionId: null,
-//   open: (transactionId) => set({ isOpen: true, transactionId }),
-//   close: () => set({ isOpen: false }),
-// }));
+  const onCloseDrawer = () => {
+    setTransactionId("");
+    setOpen(false);
+  };
+
+  return {
+    open,
+    transactionId,
+    onOpenDrawer,
+    onCloseDrawer,
+  };
+};
+
+export default useEditTransactionDrawer;

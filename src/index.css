@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 body {
+  pointer-events: fill !important;
   font-family: "Onest", sans-serif !important;
 }
 

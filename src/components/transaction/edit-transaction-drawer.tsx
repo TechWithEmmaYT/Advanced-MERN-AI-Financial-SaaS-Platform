@@ -6,10 +6,13 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import TransactionForm from "./transaction-form";
+import useEditTransactionDrawer from "@/hooks/use-edit-transaction-drawer";
 
 const EditTransactionDrawer = () => {
+  const { open, transactionId, onCloseDrawer } =
+    useEditTransactionDrawer();
   return (
-    <Drawer direction="right">
+    <Drawer open={open} onOpenChange={onCloseDrawer} direction="right">
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader>
           <DrawerTitle className="text-xl font-semibold">
@@ -19,7 +22,7 @@ const EditTransactionDrawer = () => {
             Edit a transaction to track your finances
           </DrawerDescription>
         </DrawerHeader>
-        <TransactionForm isEdit transactionId={"string"}/>
+        <TransactionForm isEdit transactionId={transactionId}/>
       </DrawerContent>
     </Drawer>
   );

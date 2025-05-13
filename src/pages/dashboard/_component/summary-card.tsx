@@ -14,9 +14,9 @@ interface PropsType {
 }
 
 const getSavingsStatus = (rate: number) => {
-  if (rate < 5) return { label: "Critical", color: "text-red-400", Icon: TrendingDownIcon };
-  if (rate < 10) return { label: "Low", color: "text-yellow-400", Icon: TrendingDownIcon };
-  if (rate < 20) return { label: "Healthy", color: "text-green-400", Icon: TrendingUpIcon };
+  if (rate < 10) return { label: "Critical", color: "text-red-400", Icon: TrendingDownIcon };
+  if (rate < 20) return { label: "Low", color: "text-yellow-400", Icon: TrendingDownIcon };
+  if (rate < 30) return { label: "Great", color: "text-green-400", Icon: TrendingUpIcon };
   return { label: "Excellent", color: "text-teal-400", Icon: TrendingUpIcon };
 };
 

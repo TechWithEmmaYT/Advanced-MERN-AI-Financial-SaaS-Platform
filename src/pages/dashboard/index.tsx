@@ -10,6 +10,9 @@ import { DateRangeType } from "@/components/date-range-select";
 const Dashboard = () => {
     const [dateRange, _setDateRange] = useState<DateRangeType>(null);
 
+    
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const sampleData = [
     { date: "2024-04-01", income: 1200, expenses: 1450 },
     { date: "2024-04-02", income: 970, expenses: 1280 },
@@ -43,6 +46,7 @@ const Dashboard = () => {
     { date: "2024-04-30", income: 1454, expenses: 2180 },
   ];
 
+ 
   return (
     <div className="w-full flex flex-col">
       {/* Dashboard Summary Overview */}
