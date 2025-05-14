@@ -33,7 +33,7 @@ const SignUp = () => {
             <img
               src={theme === "dark" ? dashboardImgDark : dashboardImg}
               alt="Dashboard"
-              className="absolute inset-0 h-full w-full object-cover object-top transform scale-100 dark:brightness-75 dark:grayscale translate-x-1"
+              className="absolute inset-0 h-full w-full object-cover object-top transform scale-120 dark:brightness-75 dark:grayscale translate-x-18 translate-y-15"
             />
           </div>
         </div>
