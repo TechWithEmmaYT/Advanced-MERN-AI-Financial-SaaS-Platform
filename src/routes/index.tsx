@@ -7,8 +7,10 @@ import AppLayout from "@/layouts/app-layout";
 import BaseLayout from "@/layouts/base-layout";
 import AuthRoute from "./authRoute";
 import ProtectedRoute from "./protectedRoute";
+import useAuthExpiration from "@/hooks/use-auth-expiration";
 
 function AppRoutes() {
+  useAuthExpiration();
   return (
     <BrowserRouter>
       <Routes>

@@ -4,12 +4,20 @@ import { NuqsAdapter } from "nuqs/adapters/react";
 import './index.css'
 import App from './App.tsx'
 import { Toaster } from 'sonner'
+import { Provider } from 'react-redux';
+import { store } from './app/store';
+import { persistor } from './app/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <NuqsAdapter>
-      <App />
-    </NuqsAdapter>
-    <Toaster />
+    <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <NuqsAdapter>
+        <App />
+      </NuqsAdapter>
+      <Toaster />
+    </PersistGate>
+    </Provider>
   </StrictMode>,
 )
