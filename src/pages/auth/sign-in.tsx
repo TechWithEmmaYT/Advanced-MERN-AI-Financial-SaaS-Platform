@@ -21,10 +21,10 @@ const SignIn = () => {
       <div className="relative hidden bg-muted lg:block -mt-3">
         <div className="absolute inset-0 flex flex-col items-end justify-end pt-8 pl-8">
           <div className="w-full max-w-3xl mx-0 pr-5">
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               Hi, I'm your AI-powered personal finance app, Finora!
             </h1>
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-gray-600 dark:text-muted-foreground">
             Finora provides insights, monthly reports, CSV import, recurring transactions, all powered by advanced AI technology. 🚀
             </p>
           </div>
@@ -32,7 +32,7 @@ const SignIn = () => {
             <img
               src={theme === "dark" ? dashboardImgDark : dashboardImg}
               alt="Dashboard"
-              className="absolute inset-0 h-full w-full object-cover object-top transform scale-120 dark:brightness-75 dark:grayscale translate-x-18 translate-y-15"
+              className="absolute inset-0 h-full w-full object-cover object-top transform scale-120  translate-x-18 translate-y-15"
             />
           </div>
         </div>
