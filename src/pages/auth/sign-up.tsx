@@ -1,7 +1,7 @@
 import SignUpForm from "./_component/signup-form"
 import Logo from "@/components/logo/logo"
 import dashboardImg from "../../assets/images/dashboard_.png";
-import dashboardImgDark from "../../assets/images/dashboard-dark.png";
+import dashboardImgDark from "../../assets/images/dashboard_dark.png";
 import { useTheme } from "@/context/theme-provider";
 
 

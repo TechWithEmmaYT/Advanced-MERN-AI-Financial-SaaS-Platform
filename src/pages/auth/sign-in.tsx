@@ -1,8 +1,7 @@
 import SignInForm from "./_component/signin-form";
 import Logo from "@/components/logo/logo";
-//import dashboard from "../../assets/images/dashboard.png";
 import dashboardImg from "../../assets/images/dashboard_.png";
-import dashboardImgDark from "../../assets/images/dashboard-dark.png";
+import dashboardImgDark from "../../assets/images/dashboard_dark.png";
 import { useTheme } from "@/context/theme-provider";
 
 const SignIn = () => {
