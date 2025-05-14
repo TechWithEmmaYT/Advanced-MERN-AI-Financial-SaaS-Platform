@@ -1,7 +1,12 @@
 import SignUpForm from "./_component/signup-form"
 import Logo from "@/components/logo/logo"
+import dashboardImg from "../../assets/images/dashboard_.png";
+import dashboardImgDark from "../../assets/images/dashboard-dark.png";
+import { useTheme } from "@/context/theme-provider";
+
 
 const SignUp = () => {
+  const { theme } = useTheme();
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -15,11 +20,24 @@ const SignUp = () => {
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+        <div className="absolute inset-0 flex flex-col items-end justify-end pt-8 pl-8">
+          <div className="w-full max-w-3xl mx-0 pr-5">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Hi, I'm your AI-powered personal finance app, Finora!
+            </h1>
+            <p className="mt-4 text-gray-600">
+              Finora helps you manage your finances with ease using advanced AI
+              technology. 🚀
+            </p>
+          </div>
+          <div className="relative bg-[#eee] max-w-3xl h-full w-full overflow-hidden mt-3">
+            <img
+              src={theme === "dark" ? dashboardImgDark : dashboardImg}
+              alt="Dashboard"
+              className="absolute inset-0 h-full w-full object-cover object-top transform scale-100 dark:brightness-75 dark:grayscale translate-x-1"
+            />
+          </div>
+        </div>
       </div>
     </div>
   )
