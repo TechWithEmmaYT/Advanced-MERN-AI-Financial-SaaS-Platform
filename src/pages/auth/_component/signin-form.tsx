@@ -1,9 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
-import { AUTH_ROUTES } from "@/routes/common/routePath";
-import { useLoginMutation } from "@/features/auth/authAPI";
+import { Link, useNavigate } from "react-router-dom";
+import { AUTH_ROUTES, PROTECTED_ROUTES } from "@/routes/common/routePath";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,8 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useAppDispatch } from "@/app/hook";
-import { setCredentials } from "@/features/auth/authSlice";
 import { Loader } from "lucide-react";
 
 const schema = z.object({
@@ -31,24 +28,20 @@ const SignInForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) => {
-  const dispatch = useAppDispatch();
-  const [login,{isLoading}] = useLoginMutation();
+  const navigate = useNavigate();
+
+  const isLoading = false;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = (data: FormValues) => {
-    login(data)
-      .unwrap()
-      .then((data) => {
-        form.reset();
-        dispatch(setCredentials(data));
-        toast.success("Login successful");
-      })
-      .catch((error) => {
-        toast.error(error.data?.message);
-      });
+    console.log(data);
+    toast.success("Login successful");
+    setTimeout(() => {
+      navigate(PROTECTED_ROUTES.OVERVIEW);
+    }, 1000);
   };
 
   return (

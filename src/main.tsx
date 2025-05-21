@@ -16,7 +16,13 @@ createRoot(document.getElementById('root')!).render(
       <NuqsAdapter>
         <App />
       </NuqsAdapter>
-      <Toaster />
+      <Toaster 
+      position="top-center" 
+        expand={true}
+        duration={5000}
+        richColors
+        closeButton
+      />
     </PersistGate>
     </Provider>
   </StrictMode>,

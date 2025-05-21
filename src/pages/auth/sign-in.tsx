@@ -29,10 +29,15 @@ const SignIn = () => {
             </p>
           </div>
           <div className="relative max-w-3xl h-full w-full overflow-hidden mt-3">
-            <img
+          <img
               src={theme === "dark" ? dashboardImgDark : dashboardImg}
               alt="Dashboard"
-              className="absolute inset-0 h-full w-full object-cover object-top transform scale-120  translate-x-18 translate-y-15"
+              className="absolute top-0 left-0 w-full h-full object-cover"
+              style={{
+                objectPosition: "left top",
+                transform: "scale(1.2)",
+                transformOrigin: "left top",
+              }}
             />
           </div>
         </div>

@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/chart"
 import { DateRangeType } from "@/components/date-range-select";
 import { formatCurrency } from "@/lib/format-currency";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatPercentage } from "@/lib/format-percentage";
+import { EmptyState } from "@/components/empty-state";
 //import { formatCurrency } from "@/lib/format-currency"
 
 interface Category {
@@ -26,7 +29,7 @@ interface Category {
 
 const COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"]
 
-const categories: Category[] = [
+const _categories: Category[] = [
   { 
     name: "Food & Dining", 
     amount: 450, 
@@ -54,46 +57,42 @@ const chartConfig = {
 
 const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
   const {dateRange} = props
+  const isFetching = false;
+
   const totalSpent = React.useMemo(() => {
-    return categories.reduce((sum, category) => sum + category.amount, 0)
+    return _categories.reduce((sum, category) => sum + category.amount, 0)
   }, [])
   
   // Format data for pie chart
-  const pieData = React.useMemo(() => {
-    return categories.map(category => ({
+  const categories = React.useMemo(() => {
+    return _categories.map(category => ({
       name: category.name,
       value: category.amount,
       percentage: Math.round((category.amount / totalSpent) * 100)
     }))
   }, [totalSpent])
 
- // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   const CustomTooltip = ({  payload }: any) => {
-//     if (payload.length) {
-//       const data = payload[0];
-//       return (
-//         <div className="">
-//           <div className="flex items-center gap-2 mb-1">
-//             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: data.color }}></div>
-//             <p className="font-medium">{data.name}</p>
-//           </div>
-//           <p className="text-muted-foreground text-sm">${data.value.toLocaleString()}</p>
-//         </div>
-//       );
-//     }
-//     return null;
-//   };
 
+  if (isFetching) {
+    return <PieChartSkeleton />;
+  }
   // Custom legend component
   const CustomLegend = () => {
     return (
       <div className="grid grid-cols-1 gap-x-4 gap-y-2 mt-4">
-        {pieData.map((entry, index) => (
+        {categories.map((entry, index) => (
           <div key={`legend-${index}`} className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
             <div className="flex justify-between w-full">
-              <span className="text-xs font-medium truncate">{entry.name}</span>
-              <span className="text-xs text-muted-foreground">{formatCurrency(entry.value)}</span>
+              <span className="text-xs font-medium truncate capitalize">{entry.name}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground whitespace-nowrap">
+                  {formatCurrency(entry.value)}
+                </span>
+                <span className="text-xs text-muted-foreground/60">
+                  ({formatPercentage(entry.percentage, { decimalPlaces: 0 })})
+                </span>
+              </div>
             </div>
           </div>
         ))}
@@ -109,22 +108,38 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
       </CardHeader>
       <CardContent className="h-[313px]">
         <div className=" w-full">
+        {categories?.length === 0 ? (
+            <EmptyState
+              title="No expenses found"
+              description="There are no expenses recorded for this period."
+            />
+          ) : (
           <ChartContainer
             config={chartConfig}
             className="mx-auto aspect-square h-[300px]"
           >
             <PieChart>
-              <ChartTooltip
+            <ChartTooltip
                 cursor={false}
-                content={
-                  <ChartTooltipContent 
-                  //labelFormatter={(_, payload) => CustomTooltip({payload})}
-                  indicator="dot"
-                  />
-                }
+                content={(props) => {
+                  if (!props.active || !props.payload?.[0]) return null;
+                  const data = props.payload[0].payload;
+
+                  return (
+                    <ChartTooltipContent
+                      label={data.name}
+                      payload={props.payload}
+                      formatter={() => [
+                        formatCurrency(data.value, { isExpense: true }),
+                        `${formatPercentage(data.percentage, { decimalPlaces: 0 })} of total`,
+                      ]}
+                    />
+                  );
+                }}
               />
+
               <Pie
-                data={pieData}
+                data={categories}
                 dataKey="value"
                 nameKey="name"
                 innerRadius={60}
@@ -133,7 +148,7 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
                 strokeWidth={2}
                 stroke="#fff"
               >
-                {pieData.map((_, index) => (
+                {categories.map((_, index) => (
                   <Cell 
                     key={`cell-${index}`} 
                     fill={COLORS[index % COLORS.length]}
@@ -174,11 +189,45 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
             </PieChart>
             
           </ChartContainer>
+          )}
         </div>
       </CardContent>
 
     </Card>
   )
 }
+
+
+const PieChartSkeleton = () => (
+  <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
+    <CardHeader className="pb-2">
+      <Skeleton className="h-6 w-48" />
+      <Skeleton className="h-4 w-32 mt-1" />
+    </CardHeader>
+    <CardContent className="h-[313px]">
+      <div className="w-full flex items-center justify-center">
+        <div className="relative w-[200px] h-[200px]">
+          <Skeleton className="rounded-full w-full h-full" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <Skeleton className="h-8 w-24 mb-2" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+      </div>
+      <div className="mt-0 space-y-2">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-3 w-3 rounded-full" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+            <Skeleton className="h-4 w-12" />
+          </div>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
+
 
 export default ExpensePieChart

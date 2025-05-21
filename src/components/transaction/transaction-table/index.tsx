@@ -1,15 +1,65 @@
 import { DataTable } from "@/components/data-table";
 import { TRANSACTION_DATA } from "./data";
 import { transactionColumns } from "./column";
-import { _TRANSACTION_TYPE } from "@/constant";
+import { _TRANSACTION_TYPE, _TransactionType } from "@/constant";
+import { useState } from "react";
+import useDebouncedSearch from "@/hooks/use-debounce-search";
 
-const TransactionTable = () => {
-  const handleSearch = (value: string) => {
-    console.log(value);
+type FilterType = {
+  type?: _TransactionType | undefined;
+  recurringStatus?: "RECURRING" | "NON_RECURRING" | undefined;
+  pageNumber?: number;
+  pageSize?: number;
+};
+
+const TransactionTable = (props: {
+  pageSize?: number;
+  isShowPagination?: boolean;
+}) => {
+  const [filter, setFilter] = useState<FilterType>({
+    type: undefined,
+    recurringStatus: undefined,
+    pageNumber: 1,
+    pageSize: props.pageSize || 10,
+  });
+
+  const { debouncedTerm, setSearchTerm } = useDebouncedSearch("", {
+    delay: 500,
+  });
+
+  const pagination = {
+    totalItems: 0,
+    totalPages: 0,
+    pageNumber: filter.pageNumber,
+    pageSize: filter.pageSize,
   };
-  const handleFilterChange = () => {};
-  const handleBulkDelete = (ids: string[]) => {
-    console.log(ids);
+
+
+  const handleSearch = (value: string) => {
+    console.log(debouncedTerm);
+    setSearchTerm(value);
+  };
+
+  const handleFilterChange = (filters: Record<string, string>) => {
+    const { type, frequently } = filters;
+    setFilter((prev) => ({
+      ...prev,
+      type: type as _TransactionType,
+      recurringStatus: frequently as "RECURRING" | "NON_RECURRING",
+    }));
+  };
+
+
+  const handlePageChange = (pageNumber: number) => {
+    setFilter((prev) => ({ ...prev, pageNumber }));
+  };
+
+  const handlePageSizeChange = (pageSize: number) => {
+    setFilter((prev) => ({ ...prev, pageSize }));
+  };
+
+  const handleBulkDelete = (transactionIds: string[]) => {
+    console.log(transactionIds);
   };
 
   return (
@@ -17,6 +67,10 @@ const TransactionTable = () => {
       data={TRANSACTION_DATA}
       columns={transactionColumns}
       searchPlaceholder="Search transactions..."
+      isLoading={false}
+      isBulkDeleting={false}
+      isShowPagination={props.isShowPagination}
+      pagination={pagination}
       filters={[
         {
           key: "type",
@@ -36,7 +90,9 @@ const TransactionTable = () => {
         },
       ]}
       onSearch={handleSearch}
-      onFilterChange={handleFilterChange}
+      onPageChange={(pageNumber) => handlePageChange(pageNumber)}
+      onPageSizeChange={(pageSize) => handlePageSizeChange(pageSize)}
+      onFilterChange={(filters) => handleFilterChange(filters)}
       onBulkDelete={handleBulkDelete}
     />
   );

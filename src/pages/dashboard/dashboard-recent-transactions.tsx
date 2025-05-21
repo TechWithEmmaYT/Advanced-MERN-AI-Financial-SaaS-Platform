@@ -19,7 +19,7 @@ const DashboardRecentTransactions = () => {
       <Separator className="mt-3 !bg-gray-100 dark:!bg-gray-800" />
       </CardHeader>
       <CardContent className="pt-0">
-        <TransactionTable />
+        <TransactionTable isShowPagination={false} />
       </CardContent>
     </Card>
   )
