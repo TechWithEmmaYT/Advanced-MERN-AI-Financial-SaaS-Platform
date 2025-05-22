@@ -164,7 +164,9 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-                minTickGap={32}
+
+
+                minTickGap={isMobile ? 20 : 25}
                 tickFormatter={(value) => format(new Date(value), isMobile ? "MMM d" : "MMMM d, yyyy") }
               />
              <ChartTooltip
