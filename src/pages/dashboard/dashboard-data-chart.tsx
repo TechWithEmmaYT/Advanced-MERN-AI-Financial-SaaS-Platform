@@ -164,8 +164,6 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
-
-
                 minTickGap={isMobile ? 20 : 25}
                 tickFormatter={(value) => format(new Date(value), isMobile ? "MMM d" : "MMMM d, yyyy") }
               />
@@ -190,7 +188,7 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
             />
               <Area
                 dataKey="expenses"
-                stackId="b"
+                stackId="1"
                 type="step"
                 fill="url(#expensesGradient)"
                 stroke={COLORS[1]}
@@ -198,12 +196,14 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
               />
               <Area
                 dataKey="income"
-                stackId="b"
+                stackId="1"
                 type="step"
                 fill="url(#incomeGradient)"
                 stroke={COLORS[0]}
               />
-            <ChartLegend content={<ChartLegendContent  verticalAlign="top"/>} />
+            <ChartLegend
+            verticalAlign="bottom"
+            content={<ChartLegendContent />} />
             </AreaChart>
           </ChartContainer>
         )}

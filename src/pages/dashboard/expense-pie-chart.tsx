@@ -20,7 +20,6 @@ import { formatCurrency } from "@/lib/format-currency";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatPercentage } from "@/lib/format-percentage";
 import { EmptyState } from "@/components/empty-state";
-//import { formatCurrency } from "@/lib/format-currency"
 
 interface Category {
   name: string;
@@ -121,21 +120,8 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
             <PieChart>
             <ChartTooltip
                 cursor={false}
-                content={(props) => {
-                  if (!props.active || !props.payload?.[0]) return null;
-                  const data = props.payload[0].payload;
-
-                  return (
-                    <ChartTooltipContent
-                      label={data.name}
-                      payload={props.payload}
-                      formatter={() => [
-                        formatCurrency(data.value, { isExpense: true }),
-                        `${formatPercentage(data.percentage, { decimalPlaces: 0 })} of total`,
-                      ]}
-                    />
-                  );
-                }}
+                content={<ChartTooltipContent
+                />}
               />
 
               <Pie
