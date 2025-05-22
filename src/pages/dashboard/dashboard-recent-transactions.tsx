@@ -1,9 +1,9 @@
+import { Link } from "react-router-dom"
 import TransactionTable from "@/components/transaction/transaction-table"
 import { Button } from "@/components/ui/button"
 import { Card,CardAction,CardContent,CardDescription,CardHeader,CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { PROTECTED_ROUTES } from "@/routes/common/routePath"
-import { Link } from "react-router-dom"
 
 const DashboardRecentTransactions = () => {
   return (
@@ -19,7 +19,9 @@ const DashboardRecentTransactions = () => {
       <Separator className="mt-3 !bg-gray-100 dark:!bg-gray-800" />
       </CardHeader>
       <CardContent className="pt-0">
-        <TransactionTable isShowPagination={false} />
+        <TransactionTable 
+        pageSize={5}
+        isShowPagination={false} />
       </CardContent>
     </Card>
   )

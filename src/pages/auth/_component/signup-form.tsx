@@ -1,9 +1,11 @@
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { AUTH_ROUTES } from "@/routes/common/routePath";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -13,8 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "sonner";
-import { Loader } from "lucide-react";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Mail } from "lucide-react";
+import { Loader, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -20,29 +20,35 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import {useTypedSelector } from "@/app/hook";
 
 const formSchema = z.object({
   email: z.string(),
-  frequency: z.enum(["MONTHLY"]),
+  frequency: z.string(),
   isEnabled: z.boolean(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const ScheduleReportForm = () => {
+const ScheduleReportForm = ({onCloseDrawer}: {onCloseDrawer: () => void}) => {
+  //const dispatch = useAppDispatch();
+  const {user,reportSetting} = useTypedSelector((state) => state. auth);
+  const isLoading = false
+  
   // Initialize the form
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      isEnabled: true,
-      frequency: "MONTHLY",
+      email: user?.email || "",
+      isEnabled: reportSetting?.isEnabled || true,
+      frequency:  reportSetting?.frequency || "MONTHLY",
     },
   });
 
   // Handle form submission
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
+    onCloseDrawer();
   };
 
   // Get summary text based on form values
@@ -149,11 +155,13 @@ const ScheduleReportForm = () => {
 
 
              {/* Submit Button */}
-             <div className="sticky bottom-0 py-2">
+             <div className="sticky bottom-0 py-2 z-50">
                 <Button
                   type="submit"
+                  disabled={isLoading}
                   className="w-full text-white"
                 >
+                  {isLoading && <Loader className="h-4 w-4 animate-spin" />}
                   Save changes
                 </Button>
               </div>

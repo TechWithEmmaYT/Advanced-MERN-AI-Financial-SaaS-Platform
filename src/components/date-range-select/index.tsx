@@ -16,6 +16,19 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 
+export const DateRangeEnum = {
+  LAST_30_DAYS : "30days",
+  LAST_MONTH : "lastMonth",
+  LAST_3_MONTHS : "last3Months",
+  LAST_YEAR : "lastYear",
+  THIS_MONTH : "thisMonth",
+  THIS_YEAR : "thisYear",
+  ALL_TIME : "allTime",
+  CUSTOM : "custom"
+} as const;
+
+export type DateRangeEnumType = (typeof DateRangeEnum)[keyof typeof DateRangeEnum];
+
 export type DateRangeType = {
   from: Date | null;
   to: Date | null;
@@ -32,78 +45,78 @@ type DateRangePreset = {
 interface DateRangeSelectProps {
   dateRange: DateRangeType;
   setDateRange: (range: DateRangeType) => void;
-  defaultRange?: "30days" | "thisMonth";
+  defaultRange?: DateRangeEnumType;
 }
 
 const presets: DateRangePreset[] = [
   {
     label: "Last 30 Days",
-    value: "30days",
+    value: DateRangeEnum.LAST_30_DAYS,
     getRange: () => ({
       from: subDays(new Date(), 30),
       to: new Date(),
-      value: "30days",
+      value: DateRangeEnum.LAST_30_DAYS,
       label: "for Past 30 Days",
     }),
   },
   {
     label: "Last Month",
-    value: "lastMonth",
+    value: DateRangeEnum.LAST_MONTH,
     getRange: () => ({
       from: startOfMonth(subMonths(new Date(), 1)),
       to: startOfMonth(new Date()),
-      value: "lastMonth",
+      value: DateRangeEnum.LAST_MONTH,
       label: "for Last Month",
     }),
   },
   {
     label: "Last 3 Months",
-    value: "last3Months",
+    value: DateRangeEnum.LAST_3_MONTHS,
     getRange: () => ({
       from: startOfMonth(subMonths(new Date(), 3)),
       to: startOfMonth(new Date()),
-      value: "last3Months",
+      value: DateRangeEnum.LAST_3_MONTHS,
       label: "for Past 3 Months",
     }),
   },
   {
     label: "Last Year",
-    value: "lastYear",
+    value: DateRangeEnum.LAST_YEAR,
     getRange: () => ({
       from: startOfYear(subYears(new Date(), 1)),
       to: startOfYear(new Date()),
-      value: "lastYear",
+      value: DateRangeEnum.LAST_YEAR,
       label: "for Past Year",
     }),
   },
   {
     label: "This Month",
-    value: "thisMonth",
+    value: DateRangeEnum.THIS_MONTH,
     getRange: () => ({
       from: startOfMonth(new Date()),
       to: new Date(),
-      value: "thisMonth",
+      value: DateRangeEnum.THIS_MONTH,
       label: "for This Month",
     }),
   },
   {
     label: "This Year",
-    value: "thisYear",
+    value: DateRangeEnum.THIS_YEAR,
     getRange: () => ({
       from: startOfYear(new Date()),
       to: new Date(),
-      value: "thisYear",
+      value: DateRangeEnum.THIS_YEAR,
       label: "for This Year",
 
     }),
   },
   {
     label: "All Time",
-    value: "allTime",
+    value: DateRangeEnum.ALL_TIME,
     getRange: () => ({
       from: null,
       to: null,
-      value: "allTime",
+      value: DateRangeEnum.ALL_TIME,
       label: "across All Time",
     }),
   },
@@ -112,7 +125,7 @@ const presets: DateRangePreset[] = [
 export const DateRangeSelect = ({
   dateRange,
   setDateRange,
-  defaultRange = "30days",
+  defaultRange = DateRangeEnum.LAST_30_DAYS,
 }: DateRangeSelectProps) => {
   const [open, setOpen] = useState(false);
 

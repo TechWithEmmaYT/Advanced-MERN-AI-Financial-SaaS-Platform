@@ -3,6 +3,7 @@ import {
   ArrowUpDown,
   CircleDot,
   Copy,
+  Loader,
   LucideIcon,
   MoreHorizontal,
   Pencil,
@@ -21,28 +22,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  TransactionFrequencyType,
-  TransactionStatusType,
-  _TRANSACTION_FREQUENCY,
-  _TRANSACTION_TYPE,
-  _TransactionType,
-} from "@/constant";
 import { formatCurrency } from "@/lib/format-currency";
 import useEditTransactionDrawer from "@/hooks/use-edit-transaction-drawer";
+import { TransactionType } from "@/features/transaction/transationType";
+import { _TRANSACTION_FREQUENCY, _TRANSACTION_TYPE } from "@/constant";
 
-export type TransactionType = {
-  id: string;
-  date: Date;
-  title: string;
-  amount: number;
-  isRecurring: boolean;
-  type: _TransactionType;
-  category: string;
-  status?: TransactionStatusType;
-  frequency: TransactionFrequencyType | null;
-  nextOccurrence?: Date;
-};
 
 type FrequencyInfo = {
   label: string;
@@ -76,17 +60,17 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "date",
+    accessorKey: "createdAt",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Date
+        Date Created
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => format(row.getValue("date"), "MMM dd, yyyy"),
+    cell: ({ row }) => format(row.getValue("createdAt"), "MMM dd, yyyy"),
   },
   {
     accessorKey: "title",
@@ -104,6 +88,14 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+    cell: ({ row }) => {
+      const category = row.original.category;
+      return (
+        <div className="capitalize">
+          {category}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "type",
@@ -155,7 +147,35 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
     },
   },
   {
-    accessorKey: "frequency",
+    accessorKey: "date",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Transaction Date
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => format(row.original.date, "MMM dd, yyyy"),
+  },
+  {
+    accessorKey: "paymentMethod",
+    header: "Payment Method",
+    cell: ({ row }) => {
+      const paymentMethod = row.original.paymentMethod;
+      if (!paymentMethod) return "N/A";
+      //remove _
+      const paymentMethodWithoutUnderscore = paymentMethod?.replace("_", " ")?.toLowerCase();
+      return (
+        <div className="capitalize">
+          {paymentMethodWithoutUnderscore}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "recurringInterval",
     header: ({ column }) => (
       <Button
         variant="ghost"
@@ -166,8 +186,8 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
       </Button>
     ),
     cell: ({ row }) => {
-      const frequency = row.getValue("frequency");
-      const nextDate = row.original?.nextOccurrence;
+      const frequency = row.getValue("recurringInterval");
+      const nextDate = row.original?.nextRecurringDate;
       const isRecurring = row.original?.isRecurring;
 
       const frequencyMap: FrequencyMapType = isRecurring
@@ -191,7 +211,7 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
             <span>{label}</span>
             {nextDate && isRecurring && (
               <span className="text-xs text-muted-foreground">
-                Next: {format(nextDate, "MMM dd")}
+                Next: {format(nextDate, "MMM dd yyyy")}
               </span>
             )}
           </div>
@@ -213,6 +233,21 @@ const ActionsCell = ({ row }: { row: any }) => {
   const transactionId = row.original.id;
   const { onOpenDrawer } = useEditTransactionDrawer();
 
+  const isDeleting = false
+  const isDuplicating = false
+
+  const handleDuplicate = (e:Event) => {
+    e.preventDefault();
+    if (isDuplicating) return;
+    
+  }
+
+  const handleDelete = (e:Event) => {
+    e.preventDefault();
+    if (isDeleting) return;
+    
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -220,15 +255,27 @@ const ActionsCell = ({ row }: { row: any }) => {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-44" align="end">
+      <DropdownMenuContent className="w-44" align="end"
+       onCloseAutoFocus={(e) => {
+        if (isDeleting || isDuplicating) {
+          e.preventDefault();
+        }
+      }}
+      >
         <DropdownMenuItem onClick={() => onOpenDrawer(transactionId)}>
           <Pencil className="mr-1 h-4 w-4" />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem
+        className="relative"
+        disabled={isDuplicating}
+         onSelect={handleDuplicate}
+        >
           <Copy className="mr-1 h-4 w-4" />
           Duplicate
+          {!isDuplicating && <Loader className="ml-1 h-4 w-4 absolute right-2 animate-spin" />}
         </DropdownMenuItem>
+        
         {isRecurring && (
           <>
             <DropdownMenuItem>
@@ -238,9 +285,13 @@ const ActionsCell = ({ row }: { row: any }) => {
           </>
         )}
           <DropdownMenuSeparator />
-            <DropdownMenuItem className="!text-destructive">
+            <DropdownMenuItem className="relative !text-destructive"
+              disabled={isDeleting}
+              onSelect={handleDelete}
+            >
               <Trash2 className="mr-1 h-4 w-4 !text-destructive" />
               Delete
+              {isDeleting && <Loader className="ml-1 h-4 w-4 absolute right-2 animate-spin" />}
             </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

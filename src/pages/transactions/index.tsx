@@ -23,7 +23,7 @@ export default function Transactions() {
     >
       <Card className="border-0 shadow-none">
         <CardContent className="pt-2">
-          <TransactionTable />
+          <TransactionTable pageSize={20} />
         </CardContent>
       </Card>
     </PageLayout>

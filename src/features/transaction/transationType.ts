@@ -43,8 +43,7 @@ export interface TransactionType {
   paymentMethod: string;
   createdAt: string;
   updatedAt: string;
-  __v: number;
-  id: string;
+  id?: string;
 }
 
 export interface GetAllTransactionResponse {

@@ -111,7 +111,9 @@ export function DataTable<TData>({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
+    getPaginationRowModel: isShowPagination
+    ? getPaginationRowModel()
+    : undefined,
   });
 
   const selectedRows = table.getFilteredSelectedRowModel().rows;

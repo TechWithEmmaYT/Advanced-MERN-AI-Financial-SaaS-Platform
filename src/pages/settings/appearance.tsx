@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { AppearanceForm } from "./_components/appearance-form"
+import { AppearanceTheme } from "./_components/appearance-theme"
 
 const Appearance = () => {
   return (
@@ -12,7 +12,7 @@ const Appearance = () => {
       </p>
     </div>
     <Separator />
-    <AppearanceForm />
+    <AppearanceTheme />
   </div>
   )
 }

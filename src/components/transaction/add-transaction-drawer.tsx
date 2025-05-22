@@ -15,6 +15,11 @@ import TransactionForm from "./transaction-form";
 const AddTransactionDrawer = () => {
   const [open, setOpen] = useState(false);
 
+  const onCloseDrawer = () => {
+    setOpen(false);
+  };
+
+
   return (
     <Drawer  direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -37,7 +42,9 @@ const AddTransactionDrawer = () => {
             <XIcon className="h-5 w-5 !cursor-pointer" />
           </DrawerClose>
         </DrawerHeader>
-        <TransactionForm />
+        <TransactionForm 
+        onCloseDrawer={onCloseDrawer}
+        />
       </DrawerContent>
     </Drawer>
   );

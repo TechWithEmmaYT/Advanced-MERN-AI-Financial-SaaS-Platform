@@ -22,7 +22,9 @@ const EditTransactionDrawer = () => {
             Edit a transaction to track your finances
           </DrawerDescription>
         </DrawerHeader>
-        <TransactionForm isEdit transactionId={transactionId}/>
+        <TransactionForm isEdit transactionId={transactionId}
+                onCloseDrawer={onCloseDrawer}
+        />
       </DrawerContent>
     </Drawer>
   );

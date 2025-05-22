@@ -40,6 +40,7 @@ import {
 import { Switch } from "../ui/switch";
 import CurrencyInputField from "../ui/currency-input";
 import { SingleSelector } from "../ui/single-select";
+import { AIScanReceiptData } from "@/features/transaction/transationType";
 
 const formSchema = z.object({
   title: z.string().min(2, { message: "Title must be at least 2 characters." }),
@@ -65,12 +66,17 @@ const formSchema = z.object({
     .nullable()
     .optional(),
   description: z.string().optional(),
+  receiptUrl: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) => {
-  const { isEdit = false, transactionId } = props;
+const TransactionForm = (props: { 
+  isEdit?: boolean; 
+  transactionId?: string
+  onCloseDrawer?: () => void;
+ }) => {
+  const {onCloseDrawer, isEdit = false, transactionId } = props;
 
   const [isScanning, setIsScanning] = useState(false);
 
@@ -86,6 +92,8 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
       isRecurring: false,
       frequency: null,
       description: "",
+      receiptUrl: "",
+
     },
   });
 
@@ -114,24 +122,43 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
     })
   );
 
-  const handleScanComplete = (data: {
-    amount?: number;
-    date?: Date;
-    merchant?: string;
-  }) => {
-    if (data.amount) {
-      form.setValue("amount", data.amount.toString());
-    }
-    if (data.date) {
-      form.setValue("date", data.date);
-    }
-    if (data.merchant) {
-      form.setValue("title", data.merchant);
-    }
+  const handleScanComplete = (data: AIScanReceiptData) => {
+    form.reset({
+      ...form.getValues(),
+      title: data.title || "",
+      amount: data.amount.toString(),
+      type: data.type || _TRANSACTION_TYPE.EXPENSE,
+      category: data.category?.toLowerCase() || "",
+      date: new Date(data.date),
+      paymentMethod: data.paymentMethod || "",
+      isRecurring: false,
+      frequency: null,
+      description: data.description || "",
+      receiptUrl: data.receiptUrl || "",
+    })
   };
   // Handle form submission
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
+  const onSubmit = (values: FormValues) => {
+    // if (isCreating || isUpdating) return;
+    console.log("Form submitted:", values);
+    const payload = {
+      title: values.title,
+      type: values.type,
+      category: values.category,
+      paymentMethod: values.paymentMethod,
+      description: values.description || "",
+      amount: Number(values.amount),
+      date: values.date.toISOString(),
+      isRecurring: values.isRecurring || false,
+      recurringInterval: values.frequency || null,
+    };
+    if (isEdit && transactionId) {
+      console.log("Edit transaction:", payload);
+      onCloseDrawer?.();
+      return
+    } 
+    //Create transaction
+    
   };
 
   return (
@@ -142,6 +169,7 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
             {/* Receipt Upload Section */}
             {!isEdit && (
               <RecieptScanner
+              loadingChange={isScanning}
                 onScanComplete={handleScanComplete}
                 onLoadingChange={setIsScanning}
               />
@@ -253,7 +281,8 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <SingleSelector
-                    value={CATEGORIES.find((opt) => opt.value === field.value)}
+                    value={CATEGORIES.find((opt) => opt.value === field.value) || field.value ? {value: field.value, label: field.value} : undefined}
+                    
                     onChange={(option) => field.onChange(option.value)}
                     options={CATEGORIES}
                     placeholder="Select or type a category"
@@ -300,9 +329,7 @@ const TransactionForm = (props: { isEdit?: boolean; transactionId?: string }) =>
                           console.log(date)
                           field.onChange(date); // This updates the form value
                         }}
-                        disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
-                        }
+                        disabled={(date) => date < new Date("2023-01-01")}
                         initialFocus
                       />
                     </PopoverContent>

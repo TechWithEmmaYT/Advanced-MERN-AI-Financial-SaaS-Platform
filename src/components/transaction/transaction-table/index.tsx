@@ -28,8 +28,8 @@ const TransactionTable = (props: {
   });
 
   const pagination = {
-    totalItems: 0,
-    totalPages: 0,
+    totalItems: 20,
+    totalPages: 1,
     pageNumber: filter.pageNumber,
     pageSize: filter.pageSize,
   };
