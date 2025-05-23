@@ -22,39 +22,63 @@ interface SummaryCardProps {
   percentageChange?: number;
   isPercentageValue?: boolean;
   isLoading?: boolean;
+  expenseRatio?: number;
   cardType: CardType;
 }
 
-const getCardStatus = (value: number, cardType: CardType): CardStatus => {
+const getCardStatus = (
+  value: number, 
+  cardType: CardType,
+  expenseRatio?: number
+): CardStatus => {
   if (cardType === "savings") {
-    if (value === 0)
+    if (value === 0) {
       return {
         label: "No Savings Record",
         color: "text-gray-400",
         Icon: TrendingDownIcon,
       };
-    if (value < 10)
+    }
+    // Show spending warnings first if expenses are high
+    if (expenseRatio && expenseRatio > 75) {
       return {
-        label: "Critical",
+        label: "High Spend",
         color: "text-red-400",
         Icon: TrendingDownIcon,
-        description: "Aim for at least 10%",
+        description: `${expenseRatio.toFixed(0)}% spent`,
       };
-    if (value < 20)
+    }
+  
+    if (expenseRatio && expenseRatio > 60) {
       return {
-        label: "Low",
+        label: "High Spend",
+        color: "text-orange-400",
+        Icon: TrendingDownIcon,
+        description: `${expenseRatio.toFixed(0)}% spent`,
+      };
+    }
+    // Then check savings rate
+    if (value < 10) {
+      return {
+        label: "Low Savings",
+        color: "text-red-400",
+        Icon: TrendingDownIcon,
+        description: `Only ${value.toFixed(1)}% saved`,
+      };
+    }
+    if (value < 20) {
+      return {
+        label: "Moderate",
         color: "text-yellow-400",
         Icon: TrendingDownIcon,
+        description: `${expenseRatio?.toFixed(0)}% spent`,
       };
-    if (value < 30)
-      return {
-        label: "Great",
-        color: "text-green-400",
-        Icon: TrendingUpIcon,
-      };
+    }
+  
+    // Good savings rate
     return {
-      label: "Excellent",
-      color: "text-teal-400",
+      label: "Good Savings",
+      color: "text-green-400",
       Icon: TrendingUpIcon,
     };
   }
@@ -92,6 +116,7 @@ const getCardStatus = (value: number, cardType: CardType): CardStatus => {
   };
 };
 
+
 const getTrendDirection = (value: number, cardType: CardType) => {
   if (cardType === "expenses") {
     // For expenses, lower is better
@@ -108,9 +133,10 @@ const SummaryCard: FC<SummaryCardProps> = ({
   percentageChange,
   isPercentageValue,
   isLoading,
+  expenseRatio,
   cardType = "balance",
 }) => {
-  const status = getCardStatus(value, cardType);
+  const status = getCardStatus(value, cardType, expenseRatio);
   const showTrend =
     percentageChange !== undefined &&
     percentageChange !== null &&

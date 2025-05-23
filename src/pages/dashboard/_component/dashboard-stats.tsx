@@ -32,6 +32,7 @@ const DashboardStats = ({ dateRange }: { dateRange?: DateRangeType }) => {
         <SummaryCard
           title="Savings Rate"
           value={19}
+          expenseRatio={75}
           isPercentageValue
           dateRange={dateRange}
           isLoading={false}
