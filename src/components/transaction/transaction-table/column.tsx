@@ -8,7 +8,7 @@ import {
   MoreHorizontal,
   Pencil,
   RefreshCw,
-  StopCircleIcon,
+  //StopCircleIcon,
   Trash2,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -229,22 +229,34 @@ export const transactionColumns: ColumnDef<TransactionType>[] = [
 
 // eslint-disable-next-line react-refresh/only-export-components
 const ActionsCell = ({ row }: { row: any }) => {
-  const isRecurring = row.original.isRecurring;
+  //const isRecurring = row.original.isRecurring;
   const transactionId = row.original.id;
   const { onOpenDrawer } = useEditTransactionDrawer();
+  // const [duplicateTransaction,{isLoading:isDuplicating}] = useDuplicateTransactionMutation();
+  // const [deleteTransaction,{isLoading: isDeleting}] = useDeleteTransactionMutation();
 
-  const isDeleting = false
+  const isDeleting = true
   const isDuplicating = false
 
   const handleDuplicate = (e:Event) => {
     e.preventDefault();
     if (isDuplicating) return;
+    // duplicateTransaction(transactionId).unwrap().then(() => {
+    //   toast.success("Transaction duplicated successfully");
+    // }).catch((error) => {
+    //   toast.error(error.data?.message || "Failed to duplicate transaction");
+    // });
     
   }
 
   const handleDelete = (e:Event) => {
     e.preventDefault();
     if (isDeleting) return;
+    // deleteTransaction(transactionId).unwrap().then(() => {
+    //   toast.success("Transaction deleted successfully");
+    // }).catch((error) => {
+    //   toast.error(error.data?.message || "Failed to delete transaction");
+    // });
     
   }
 
@@ -273,17 +285,17 @@ const ActionsCell = ({ row }: { row: any }) => {
         >
           <Copy className="mr-1 h-4 w-4" />
           Duplicate
-          {!isDuplicating && <Loader className="ml-1 h-4 w-4 absolute right-2 animate-spin" />}
+          {isDuplicating && <Loader className="ml-1 h-4 w-4 absolute right-2 animate-spin" />}
         </DropdownMenuItem>
         
-        {isRecurring && (
+        {/* {isRecurring && (
           <>
             <DropdownMenuItem>
               <StopCircleIcon className="mr-1 h-4 w-4" />
               Stop Recurring
             </DropdownMenuItem>
           </>
-        )}
+        )} */}
           <DropdownMenuSeparator />
             <DropdownMenuItem className="relative !text-destructive"
               disabled={isDeleting}

@@ -37,6 +37,8 @@ export function AccountForm() {
   const [file, setFile] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
+  // const [updateUserMutation, { isLoading }] = useUpdateUserMutation();
+
   const isLoading = false;
 
   const form = useForm<AccountFormValues>({
@@ -56,6 +58,21 @@ export function AccountForm() {
     if (file) formData.append("profilePicture", file);
 
     toast.success("Account updated successfully");
+
+    //  updateUserMutation(formData)
+    //       .unwrap()
+    //       .then((response) => {
+    //         dispatch(
+    //           updateCredentials({ user:{
+    //             profilePicture: response.data.profilePicture,
+    //             name: response.data.name,
+    //           }})
+    //         );
+    //         toast.success("Account updated successfully");
+    //       })
+    //       .catch((error) => {
+    //         toast.error(error.data.message || "Failed to update account");
+    //       });
   };
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +101,7 @@ export function AccountForm() {
           <FormLabel>Profile Picture</FormLabel>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={avatarUrl|| user?.profilePicture || ""} />
+              <AvatarImage src={avatarUrl || user?.profilePicture || ""} />
               <AvatarFallback className="text-2xl">
                 {form.watch("name")?.charAt(0)?.toUpperCase() || "U"}
               </AvatarFallback>
@@ -115,11 +132,10 @@ export function AccountForm() {
             </FormItem>
           )}
         />
-        <Button
-        disabled={isLoading}
-        type="submit">
-        {isLoading && <Loader className="h-4 w-4 animate-spin" />}
-          Update account</Button>
+        <Button disabled={isLoading} type="submit">
+          {isLoading && <Loader className="h-4 w-4 animate-spin" />}
+          Update account
+        </Button>
       </form>
     </Form>
   );

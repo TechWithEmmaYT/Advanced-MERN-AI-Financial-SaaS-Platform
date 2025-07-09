@@ -1,0 +1,21 @@
+Title,Type,Amount,Category,Description,Date,PaymentMethod
+Freelance Web Design,INCOME,1800,Freelance,Website redesign for local bakery,2024-04-05T10:00:00.000Z,BANK_TRANSFER
+Uber Ride,EXPENSE,23.8,Transport,Ride to airport,2024-04-06T08:15:00.000Z,CARD
+Netflix Subscription,EXPENSE,15.49,Entertainment,Monthly streaming service,2024-04-10T00:00:00.000Z,AUTO_DEBIT
+Grocery - Walmart,EXPENSE,112.35,Groceries,Weekly groceries,2024-04-12T17:30:00.000Z,CARD
+Spotify Family Plan,EXPENSE,16.99,Entertainment,Monthly music subscription,2024-04-13T00:00:00.000Z,CARD
+YouTube AdSense,INCOME,287.5,Side Hustle,Monthly YouTube ad revenue,2024-04-15T10:00:00.000Z,BANK_TRANSFER
+Shell Gas Station,EXPENSE,46.2,Transport,Fuel refill,2024-04-17T13:40:00.000Z,CARD
+Consulting Session,INCOME,600,Consulting,2-hour strategy session with startup,2024-04-20T15:00:00.000Z,BANK_TRANSFER
+AT&T Mobile Bill,EXPENSE,75,Utilities,Monthly phone bill,2024-04-25T00:00:00.000Z,AUTO_DEBIT
+Trader Joe's,EXPENSE,59.9,Groceries,Midweek grocery top-up,2024-04-28T18:10:00.000Z,CARD
+Logo Design Project,INCOME,450,Freelance,Logo and branding for new brand,2024-04-03T09:30:00.000Z,BANK_TRANSFER
+Starbucks Coffee,EXPENSE,8.75,Food & Drink,Coffee with client,2024-04-04T08:50:00.000Z,CARD
+Amazon Purchase,EXPENSE,129.99,Shopping,External hard drive,2024-04-07T14:20:00.000Z,CARD
+Dog Sitting Gig,INCOME,120,Side Hustle,Weekend dog sitting,2024-04-08T19:00:00.000Z,CASH
+Movie Night,EXPENSE,19.5,Entertainment,Cinema ticket,2024-04-09T20:15:00.000Z,CASH
+Gym Membership,EXPENSE,55,Fitness,Monthly gym pass,2024-04-11T06:30:00.000Z,AUTO_DEBIT
+Twitch Donation,INCOME,75,Side Hustle,Viewer tip for gaming stream,2024-04-14T21:45:00.000Z,CASH
+Electricity Bill,EXPENSE,92.6,Utilities,April power usage,2024-04-18T00:00:00.000Z,AUTO_DEBIT
+Freelance UX Audit,INCOME,850,Freelance,UI/UX audit for SaaS dashboard,2024-04-22T10:45:00.000Z,BANK_TRANSFER
+Target Shopping,EXPENSE,67.3,Shopping,Clothes and essentials,2024-04-27T15:25:00.000Z,CARD

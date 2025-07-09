@@ -33,6 +33,9 @@ type FormValues = z.infer<typeof formSchema>;
 const ScheduleReportForm = ({onCloseDrawer}: {onCloseDrawer: () => void}) => {
   //const dispatch = useAppDispatch();
   const {user,reportSetting} = useTypedSelector((state) => state. auth);
+
+  // const [updateReportSetting,{isLoading}] = useUpdateReportSettingMutation();
+
   const isLoading = false
   
   // Initialize the form
@@ -46,9 +49,18 @@ const ScheduleReportForm = ({onCloseDrawer}: {onCloseDrawer: () => void}) => {
   });
 
   // Handle form submission
-  const onSubmit = (data: FormValues) => {
-    console.log("Form submitted:", data);
+  const onSubmit = (values: FormValues) => {
+    const payload = {isEnabled: values.isEnabled}
+    console.log("Form submitted:", payload);
     onCloseDrawer();
+    // updateReportSetting(payload).unwrap().then(() => {
+    //   dispatch(updateCredentials({reportSetting: payload}))
+    //   onCloseDrawer();
+    //   toast.success("Report setting updated successfully");
+    // }).catch((error) => {
+    //   toast.error(error.data.message || "Failed to update report setting");
+    // })
+
   };
 
   // Get summary text based on form values

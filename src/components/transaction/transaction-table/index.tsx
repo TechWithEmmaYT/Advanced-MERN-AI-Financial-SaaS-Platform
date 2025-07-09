@@ -27,6 +27,26 @@ const TransactionTable = (props: {
     delay: 500,
   });
 
+  // const [bulkDeleteTransaction, { isLoading: isBulkDeleting }] =
+  //   useBulkDeleteTransactionMutation();
+
+  // const { data, isFetching } = useGetAllTransactionsQuery({
+  //   keyword: debouncedTerm,
+  //   type: filter.type,
+  //   recurringStatus: filter.recurringStatus,
+  //   pageNumber: filter.pageNumber,
+  //   pageSize: filter.pageSize,
+  // });
+
+  // const transactions = data?.transactions || [];
+  // const pagination = {
+  //   totalItems: data?.pagination?.totalCount || 0,
+  //   totalPages: data?.pagination?.totalPages || 0,
+  //   pageNumber: filter.pageNumber,
+  //   pageSize: filter.pageSize,
+  // };
+
+
   const pagination = {
     totalItems: 20,
     totalPages: 1,
@@ -60,11 +80,20 @@ const TransactionTable = (props: {
 
   const handleBulkDelete = (transactionIds: string[]) => {
     console.log(transactionIds);
+
+    // bulkDeleteTransaction(transactionIds)
+    // .unwrap()
+    // .then(() => {
+    //   toast.success("Transactions deleted successfully");
+    // })
+    // .catch((error) => {
+    //   toast.error(error.data?.message || "Failed to delete transactions");
+    // });
   };
 
   return (
     <DataTable
-      data={TRANSACTION_DATA}
+      data={TRANSACTION_DATA} //transactions
       columns={transactionColumns}
       searchPlaceholder="Search transactions..."
       isLoading={false}

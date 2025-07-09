@@ -5,6 +5,7 @@ import { ScanText } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { AIScanReceiptData } from "@/features/transaction/transationType";
 import { toast } from "sonner";
+import { useProgressLoader } from "@/hooks/use-progress-loader";
 
 interface ReceiptScannerProps {
   loadingChange: boolean;
@@ -18,7 +19,17 @@ const ReceiptScanner = ({
   onLoadingChange,
 }: ReceiptScannerProps) => {
   const [receipt, setReceipt] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
+
+    const {
+      progress,
+      startProgress,
+      updateProgress,
+      doneProgress,
+      resetProgress,
+    } = useProgressLoader({ initialProgress: 10, completionDelay: 500 });
+
+  // const [aiScanReceipt] = useAiScanReceiptMutation()
+
 
   const handleReceiptUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -35,7 +46,7 @@ const ReceiptScanner = ({
     const formData = new FormData();
     formData.append("receipt", file);
 
-    setProgress(0);
+    startProgress(10);
     onLoadingChange(true);
     // Simulate file upload and processing
     const reader = new FileReader();
@@ -45,16 +56,17 @@ const ReceiptScanner = ({
 
       // Simulate scanning progress
       // Start progress
+      let currentProgress = 10;
       const interval = setInterval(() => {
-        setProgress(prev => {
-          // Slow down as we approach 90%
-          const increment = prev < 80 ? 10 : 1;
-          return Math.min(prev + increment, 90); // Cap at 90% until API completes
-        });
-      }, 300);  
+        const increment = currentProgress < 90 ? 10 : 1;
+        currentProgress = Math.min(currentProgress + increment, 90);
+        updateProgress(currentProgress);
+      }, 250);
 
     
       setTimeout(() => {
+        clearInterval(interval);
+
         onScanComplete({
           title: "Netflix Subscription",
           amount: 15.99,
@@ -65,11 +77,25 @@ const ReceiptScanner = ({
           receiptUrl: result,
           type: "EXPENSE",
         })
-        clearInterval(interval);
-        setProgress(100);
+        doneProgress();
+        resetProgress();
         setReceipt(null);
         onLoadingChange(false);
       },2000)
+
+      // aiScanReceipt(formData).unwrap().then((res) => {
+      //   updateProgress(100)
+      //   onScanComplete(res.data);
+      //   toast.success("Receipt scanned successfully");
+      // }).catch((error) => {
+      //   toast.error(error.data?.message || "Failed to scan receipt");
+      // })
+      // .finally(() => {
+      //   clearInterval(interval);
+      //   resetProgress();
+      //   setReceipt(null);
+      //   onLoadingChange(false);
+      // })
     };
     reader.readAsDataURL(file);
   };

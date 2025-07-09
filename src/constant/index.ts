@@ -1,3 +1,8 @@
+
+export const MAX_IMPORT_LIMIT = 300;
+export const MAX_FILE_SIZE = 5 * 1024 * 1024;  
+  
+  
   export const CATEGORIES = [
     { value: "groceries", label: "Groceries" },
     { value: "dining", label: "Dining & Restaurants" },

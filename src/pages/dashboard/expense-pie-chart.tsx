@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Label, Pie, PieChart, Cell } from "recharts"
+import * as React from "react";
+import { Label, Pie, PieChart, Cell } from "recharts";
 
 import {
   Card,
@@ -7,14 +7,14 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import { DateRangeType } from "@/components/date-range-select";
 import { formatCurrency } from "@/lib/format-currency";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -26,24 +26,29 @@ interface Category {
   amount: number;
 }
 
-const COLORS = ["var(--color-chart-1)", "var(--color-chart-2)", "var(--color-chart-3)", "var(--color-chart-4)"]
+const COLORS = [
+  "var(--color-chart-1)",
+  "var(--color-chart-2)",
+  "var(--color-chart-3)",
+  "var(--color-chart-4)",
+];
 
 const _categories: Category[] = [
-  { 
-    name: "Food & Dining", 
-    amount: 450, 
+  {
+    name: "Food & Dining",
+    amount: 450,
   },
-  { 
-    name: "Rent", 
-    amount: 500, 
+  {
+    name: "Rent",
+    amount: 500,
   },
-  { 
-    name: "Utilities", 
-    amount: 300, 
+  {
+    name: "Utilities",
+    amount: 300,
   },
-  { 
-    name: "Others", 
-    amount: 100, 
+  {
+    name: "Others",
+    amount: 100,
   },
 ];
 
@@ -52,25 +57,31 @@ const chartConfig = {
   amount: {
     label: "Amount",
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
-const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
-  const {dateRange} = props
+const ExpensePieChart = (props: { dateRange?: DateRangeType }) => {
+  const { dateRange } = props;
+
+  // const { data, isFetching } = useExpensePieChartBreakdownQuery({
+  //   preset: dateRange?.value,
+  // });
+  // const categories = data?.data?.breakdown || [];
+  // const totalSpent = data?.data?.totalSpent || 0;
+
   const isFetching = false;
 
   const totalSpent = React.useMemo(() => {
-    return _categories.reduce((sum, category) => sum + category.amount, 0)
-  }, [])
-  
+    return _categories.reduce((sum, category) => sum + category.amount, 0);
+  }, []);
+
   // Format data for pie chart
   const categories = React.useMemo(() => {
-    return _categories.map(category => ({
+    return _categories.map((category) => ({
       name: category.name,
       value: category.amount,
-      percentage: Math.round((category.amount / totalSpent) * 100)
-    }))
-  }, [totalSpent])
-
+      percentage: Math.round((category.amount / totalSpent) * 100),
+    }));
+  }, [totalSpent]);
 
   if (isFetching) {
     return <PieChartSkeleton />;
@@ -81,9 +92,14 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
       <div className="grid grid-cols-1 gap-x-4 gap-y-2 mt-4">
         {categories.map((entry, index) => (
           <div key={`legend-${index}`} className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
+            <div
+              className="h-3 w-3 rounded-full"
+              style={{ backgroundColor: COLORS[index % COLORS.length] }}
+            ></div>
             <div className="flex justify-between w-full">
-              <span className="text-xs font-medium truncate capitalize">{entry.name}</span>
+              <span className="text-xs font-medium truncate capitalize">
+                {entry.name}
+              </span>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground whitespace-nowrap">
                   {formatCurrency(entry.value)}
@@ -96,8 +112,8 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
           </div>
         ))}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
@@ -107,82 +123,78 @@ const ExpensePieChart = (props: {dateRange?: DateRangeType}) => {
       </CardHeader>
       <CardContent className="h-[313px]">
         <div className=" w-full">
-        {categories?.length === 0 ? (
+          {categories?.length === 0 ? (
             <EmptyState
               title="No expenses found"
               description="There are no expenses recorded for this period."
             />
           ) : (
-          <ChartContainer
-            config={chartConfig}
-            className="mx-auto aspect-square h-[300px]"
-          >
-            <PieChart>
-            <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent
-                />}
-              />
+            <ChartContainer
+              config={chartConfig}
+              className="mx-auto aspect-square h-[300px]"
+            >
+              <PieChart>
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent />}
+                />
 
-              <Pie
-                data={categories}
-                dataKey="value"
-                nameKey="name"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={2}
-                strokeWidth={2}
-                stroke="#fff"
-              >
-                {categories.map((_, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-                
-                <Label
-                  content={({ viewBox }) => {
-                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                      return (
-                        <text
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                        >
-                          <tspan
+                <Pie
+                  data={categories}
+                  dataKey="value"
+                  nameKey="name"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={2}
+                  strokeWidth={2}
+                  stroke="#fff"
+                >
+                  {categories.map((_, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+
+                  <Label
+                    content={({ viewBox }) => {
+                      if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                        return (
+                          <text
                             x={viewBox.cx}
                             y={viewBox.cy}
-                            className="fill-foreground text-2xl font-bold"
+                            textAnchor="middle"
+                            dominantBaseline="middle"
                           >
-                            ${totalSpent.toLocaleString()}
-                          </tspan>
-                          <tspan
-                            x={viewBox.cx}
-                            y={(viewBox.cy || 0) + 20}
-                            className="fill-muted-foreground text-xs"
-                          >
-                            Total Spent
-                          </tspan>
-                        </text>
-                      )
-                    }
-                  }}
-                />
-              </Pie>
-             <ChartLegend content={<CustomLegend />} />
-            </PieChart>
-            
-          </ChartContainer>
+                            <tspan
+                              x={viewBox.cx}
+                              y={viewBox.cy}
+                              className="fill-foreground text-2xl font-bold"
+                            >
+                              ${totalSpent.toLocaleString()}
+                            </tspan>
+                            <tspan
+                              x={viewBox.cx}
+                              y={(viewBox.cy || 0) + 20}
+                              className="fill-muted-foreground text-xs"
+                            >
+                              Total Spent
+                            </tspan>
+                          </text>
+                        );
+                      }
+                    }}
+                  />
+                </Pie>
+                <ChartLegend content={<CustomLegend />} />
+              </PieChart>
+            </ChartContainer>
           )}
         </div>
       </CardContent>
-
     </Card>
-  )
-}
-
+  );
+};
 
 const PieChartSkeleton = () => (
   <Card className="!shadow-none border-1 border-gray-100 dark:border-border">
@@ -215,5 +227,4 @@ const PieChartSkeleton = () => (
   </Card>
 );
 
-
-export default ExpensePieChart
+export default ExpensePieChart;

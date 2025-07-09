@@ -80,6 +80,18 @@ const TransactionForm = (props: {
 
   const [isScanning, setIsScanning] = useState(false);
 
+  // const {data, isLoading } = useGetSingleTransactionQuery(
+  //   transactionId || "",{skip: !transactionId}
+  // );
+  // const editData = data?.data;
+
+  // const [createTransaction, { isLoading: isCreating }] =
+  //   useCreateTransactionMutation();
+
+  // const [updateTransaction, { isLoading: isUpdating }] =
+  //   useUpdateTransactionMutation();
+
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -155,9 +167,27 @@ const TransactionForm = (props: {
     if (isEdit && transactionId) {
       console.log("Edit transaction:", payload);
       onCloseDrawer?.();
-      return
-    } 
-    //Create transaction
+      // updateTransaction({id: transactionId, transaction: payload})
+      // .unwrap()
+      // .then(() => {
+      //   onCloseDrawer?.();
+      //   toast.success("Transaction updated successfully");
+      // })
+      // .catch((error) => {
+      //   toast.error(error.data.message || "Failed to update transaction");
+      // });
+      return;
+    }
+    // createTransaction(payload)
+    //   .unwrap()
+    //   .then(() => {
+    //     form.reset();
+    //     onCloseDrawer?.();
+    //     toast.success("Transaction created successfully");
+    //   })
+    //   .catch((error) => {
+    //     toast.error(error.data.message || "Failed to create transaction");
+    //   });
     
   };
 

@@ -21,8 +21,9 @@ const Billing = () => {
             <strong>extended version</strong> of this project. It took us{" "}
             <strong>weeks and months</strong> to design, build, and refine.
             <br />By supporting us, you unlock features like{" "}
-            <strong>CSV import</strong>,<strong> Free trial & Pro payment (Stripe)</strong>, and full{" "}
-            <strong>source code</strong>.
+            <strong> Free trial & Pro payment Monthly/Yearly Plan (w/ Stripe)</strong>, {" "}<strong>Setup Video</strong>, and {" "}
+            <strong>Full Source Code</strong>.
+           
           </p>
           <p className="text-base mb-2">
             Your support helps us keep creating{" "}

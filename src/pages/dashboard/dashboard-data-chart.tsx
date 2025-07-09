@@ -82,8 +82,18 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
   const { dateRange } = props;
   const isMobile = useIsMobile();
 
- const data = sampleData
- const isFetching = false;
+  // const { data, isFetching } = useChartAnalyticsQuery({
+  //   preset: dateRange?.value,
+  // });
+  // const chartData = data?.data?.chartData || [];
+  // const totalExpenseCount = data?.data?.totalExpenseCount || 0;
+  // const totalIncomeCount = data?.data?.totalIncomeCount || 0;
+
+
+  const isFetching = false;
+ const chartData = sampleData
+ const totalIncomeCount = 20;
+ const totalExpenseCount = 10;
 
  if(isFetching){
   return <ChartSkeleton/>
@@ -112,8 +122,8 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
                  No of {chartConfig[chart].label}
                 </span>
                 <span className="flex items-center justify-center gap-2 text-lg font-semibold leading-none sm:text-3xl">
-                  {key === TRANSACTION_TYPES[0] ? <TrendingUpIcon className="size-3 ml-2 text-primary" /> : <TrendingDownIcon className="size-3 ml-2 text-destructive" />}
-                  {data.filter(item => key === TRANSACTION_TYPES[0] ? item.income > 0 : item.expenses > 0).length}
+                {key === TRANSACTION_TYPES[0] ? <TrendingUpIcon className="size-3 ml-2 text-primary" /> : <TrendingDownIcon className="size-3 ml-2 text-destructive" />}
+                {key === TRANSACTION_TYPES[0] ? totalIncomeCount : totalExpenseCount}
                 </span>
               </div>
             )
@@ -121,7 +131,7 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-2 sm:px-6 sm:pt-2 h-[300px]">
-        {data?.length === 0 ? (
+        { chartData?.length === 0 ? (
           <EmptyState
           title="No transaction data"
           description="There are no transactions recorded for this period."
@@ -131,7 +141,7 @@ const DashboardDataChart: React.FC<PropsType> = (props) => {
             config={chartConfig}
             className="aspect-auto h-[300px] w-full"
           >
-            <AreaChart data={data || []}>
+            <AreaChart data={chartData || []}>
               <defs>
                 <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop

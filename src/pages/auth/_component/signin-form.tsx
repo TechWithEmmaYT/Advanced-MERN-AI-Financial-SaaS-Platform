@@ -28,7 +28,10 @@ const SignInForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"form">) => {
+  //const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  // const [login,{isLoading}] = useLoginMutation();
+
 
   const isLoading = false;
 
@@ -42,6 +45,20 @@ const SignInForm = ({
     setTimeout(() => {
       navigate(PROTECTED_ROUTES.OVERVIEW);
     }, 1000);
+
+    // login(values)
+    // .unwrap()
+    // .then((data) => {
+    //   dispatch(setCredentials(data));
+    //   toast.success("Login successful");
+    //   setTimeout(() => {
+    //     navigate(PROTECTED_ROUTES.OVERVIEW);
+    //   }, 1000);
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    //   toast.error(error.data?.message || "Failed to login");
+    // });
   };
 
   return (

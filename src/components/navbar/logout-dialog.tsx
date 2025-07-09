@@ -3,6 +3,10 @@ import { DialogContent,DialogDescription } from "@/components/ui/dialog";
 import { Loader } from "lucide-react";
 import { Button } from "../ui/button";
 import { useTransition } from "react";
+import { useAppDispatch } from "@/app/hook";
+import { logout } from "@/features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { AUTH_ROUTES } from "@/routes/common/routePath";
 
 interface LogoutDialogProps {
     isOpen: boolean;
@@ -11,9 +15,14 @@ interface LogoutDialogProps {
 
 const LogoutDialog = ({ isOpen, setIsOpen }: LogoutDialogProps) => {
     const [isPending, startTransition] = useTransition();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
     const handleLogout = () => {
       startTransition(() => {
         setIsOpen(false);
+        dispatch(logout());
+        navigate(AUTH_ROUTES.SIGN_IN);
       });
     };
     return (

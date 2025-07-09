@@ -1,10 +1,13 @@
 import {
   _TRANSACTION_FREQUENCY,
   _TransactionType,
+  PAYMENT_METHODS_ENUM,
 } from "@/constant";
 
 type RecurringIntervalType =
   (typeof _TRANSACTION_FREQUENCY)[keyof typeof _TRANSACTION_FREQUENCY];
+type PaymentMethodType =
+  (typeof PAYMENT_METHODS_ENUM)[keyof typeof PAYMENT_METHODS_ENUM];
 
 export interface CreateTransactionBody {
   title: string;
@@ -82,4 +85,20 @@ export interface GetSingleTransactionResponse {
 export interface UpdateTransactionPayload {
   id: string;
   transaction: CreateTransactionBody;
+}
+
+
+export interface BulkTransactionType {
+  title: string;
+  type: _TransactionType;
+  amount: number;
+  category: string;
+  description: string;
+  date: string;
+  paymentMethod: PaymentMethodType;
+  isRecurring: boolean;
+}
+
+export interface BulkImportTransactionPayload {
+  transactions: BulkTransactionType[];
 }
