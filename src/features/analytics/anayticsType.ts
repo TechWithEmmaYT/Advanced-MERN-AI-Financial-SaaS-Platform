@@ -26,8 +26,11 @@ export interface SummaryAnalyticsResponse {
         availableBalance: number;
         totalIncome: number;
         totalExpenses: number;
-        savingsRate: number;
         transactionCount: number;
+        savingRate: {
+            percentage: number;
+            expenseRatio: number;
+          };
         percentageChange: PercentageChange;
         preset: PresetType;
     }

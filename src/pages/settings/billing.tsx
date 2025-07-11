@@ -17,27 +17,53 @@ const Billing = () => {
         <div className="mt-0">
           <h1 className="text-lg font-medium mb-2">Support Us</h1>
           <p className="text-base mb-2">
-            The Billing feature is part of the{" "}
-            <strong>extended version</strong> of this project. It took us{" "}
-            <strong>weeks and months</strong> to design, build, and refine.
-            <br />By supporting us, you unlock features like{" "}
-            <strong> Free trial & Pro payment Monthly/Yearly Plan (w/ Stripe)</strong>, {" "}<strong>Setup Video</strong>, and {" "}
-            <strong>Full Source Code</strong>.
-           
+            The Billing feature is part of the <strong>extended version</strong>{" "}
+            of this project. It took <strong>weeks and months</strong> to
+            design, build, and refine.
           </p>
+
           <p className="text-base mb-2">
-            Your support helps us keep creating{" "}
-            <strong>free, advanced projects</strong> for the community.
+            By supporting us, you’ll unlock premium billing features including:
           </p>
-          <p className="text-base">
-            🛠️ Get access here:{" "}
+
+          <ul className="list-disc pl-5 text-base mb-2">
+            <li>
+              <strong>Free Trial + Stripe Subscriptions</strong>
+            </li>
+            <li>
+              <strong>Monthly & Yearly Plans</strong> built-in
+            </li>
+            <li>
+              <strong>Switch between plans</strong> (monthly ↔ yearly)
+            </li>
+            <li>
+              <strong>Manage & Cancel Subscriptions</strong> anytime
+            </li>
+            <li>
+              <strong>Step-by-step Setup Video</strong>
+            </li>
+            <li>
+              <strong>Full Source Code</strong>
+            </li>
+            <li>
+              <strong>Production-Ready Deployment</strong>
+            </li>
+          </ul>
+
+          <p className="text-base mb-2">
+            Your support helps us keep building free, high-quality projects for
+            the community.
+          </p>
+
+          <p className="text-base font-medium">
+            🔓 <span className="text-green-600">Get instant access now:</span>
             <a
-              className="text-blue-500 underline"
-              href="https://techwithemma.gumroad.com/"
+              className="text-blue-500 underline ml-1"
+              href="https://bitly.com/techwithemma"
               target="_blank"
               rel="noopener noreferrer"
             >
-             https://bitly.com/techwithemma
+              https://bitly.com/techwithemma
             </a>
           </p>
           <br />

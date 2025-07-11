@@ -1,0 +1,21 @@
+Title,Type,Amount,Category,Description,Date,PaymentMethod
+Freelance Payment,INCOME,1250,Freelance,Landing page for client,2025-06-09T09:30:00.000Z,BANK_TRANSFER
+UI Design Contract,INCOME,850,Freelance,UI work for mobile app,2025-06-17T14:00:00.000Z,BANK_TRANSFER
+Social Media Content,INCOME,600,Side Hustle,June Instagram campaign,2025-06-24T11:15:00.000Z,BANK_TRANSFER
+Spotify Subscription,EXPENSE,16.99,Entertainment,Monthly Spotify premium,2025-06-08T00:00:00.000Z,AUTO_DEBIT
+Groceries - Trader Joe's,EXPENSE,78.25,Groceries,Weekly groceries,2025-06-12T18:45:00.000Z,CARD
+Team Lunch,EXPENSE,54.5,Meals,Collaboration meetup lunch,2025-06-14T13:00:00.000Z,CARD
+Adobe Creative Cloud,EXPENSE,29.99,Software,Monthly Adobe tools,2025-06-18T10:00:00.000Z,AUTO_DEBIT
+Fuel Refill,EXPENSE,42.8,Transport,Car fuel station,2025-06-22T09:20:00.000Z,CARD
+Netflix,EXPENSE,15.49,Entertainment,Monthly Netflix subscription,2025-06-28T00:00:00.000Z,AUTO_DEBIT
+Electricity Bill,EXPENSE,92.4,Utilities,June energy bill,2025-07-03T00:00:00.000Z,AUTO_DEBIT
+Logo Design,INCOME,1200,Freelance,Brand identity for startup,2025-05-10T10:15:00.000Z,BANK_TRANSFER
+UX Audit,INCOME,950,Freelance,Website UX review,2025-05-18T11:30:00.000Z,BANK_TRANSFER
+T-shirt Sales,INCOME,500,Side Hustle,Online store May sales,2025-05-30T15:45:00.000Z,BANK_TRANSFER
+Groceries - Walmart,EXPENSE,89.7,Groceries,Weekly groceries,2025-05-11T17:30:00.000Z,CARD
+Gym Membership,EXPENSE,45,Fitness,Monthly gym payment,2025-05-13T08:00:00.000Z,AUTO_DEBIT
+Amazon Order,EXPENSE,109.99,Shopping,New headphones,2025-05-20T14:15:00.000Z,CARD
+Domain Renewal,EXPENSE,19.99,Hosting,Personal site domain renewal,2025-05-23T07:50:00.000Z,CARD
+Lunch with Client,EXPENSE,62.3,Meals,Business meeting lunch,2025-05-25T12:30:00.000Z,CARD
+Movie Night,EXPENSE,21.75,Entertainment,Weekend cinema,2025-06-03T20:00:00.000Z,CARD
+Internet Bill,EXPENSE,78.5,Utilities,Monthly WiFi payment,2025-06-06T00:00:00.000Z,AUTO_DEBIT
