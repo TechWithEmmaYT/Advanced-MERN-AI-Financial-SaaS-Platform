@@ -164,13 +164,15 @@ const SummaryCard: FC<SummaryCardProps> = ({
     );
   }
 
-  const formattedValue = isPercentageValue
-    ? formatPercentage(value, { decimalPlaces: 1 })
-    : formatCurrency(value, {
-        isExpense: cardType === "expenses",
-        showSign: cardType === "balance" && value < 0,
-      });
-
+  // This was recently updated
+  const formatCountupValue = (val: number) => {
+    return isPercentageValue
+      ? formatPercentage(val, { decimalPlaces: 1 })
+      : formatCurrency(val, {
+          isExpense: cardType === "expenses",
+          showSign: cardType === "balance" && val < 0,
+        });
+  };
   return (
     <Card className="!border-none !border-0 !gap-0 !bg-white/5">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 !pb-5">
@@ -191,7 +193,7 @@ const SummaryCard: FC<SummaryCardProps> = ({
             preserveValue
             decimals={2}
             decimalPlaces={2}
-            formattingFn={() => formattedValue}
+            formattingFn={formatCountupValue}
           />
         </div>
 
