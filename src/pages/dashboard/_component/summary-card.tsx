@@ -31,7 +31,7 @@ const getCardStatus = (
   cardType: CardType,
   expenseRatio?: number
 ): CardStatus => {
-  if (cardType === "savings") {
+ if (cardType === "savings") {
     if (value === 0) {
       return {
         label: "No Savings Record",
@@ -39,25 +39,8 @@ const getCardStatus = (
         Icon: TrendingDownIcon,
       };
     }
-    // Show spending warnings first if expenses are high
-    if (expenseRatio && expenseRatio > 75) {
-      return {
-        label: "High Spend",
-        color: "text-red-400",
-        Icon: TrendingDownIcon,
-        description: `${expenseRatio.toFixed(0)}% spent`,
-      };
-    }
-  
-    if (expenseRatio && expenseRatio > 60) {
-      return {
-        label: "High Spend",
-        color: "text-orange-400",
-        Icon: TrendingDownIcon,
-        description: `${expenseRatio.toFixed(0)}% spent`,
-      };
-    }
-    // Then check savings rate
+
+    // Check savings percentage first
     if (value < 10) {
       return {
         label: "Low Savings",
@@ -66,6 +49,7 @@ const getCardStatus = (
         description: `Only ${value.toFixed(1)}% saved`,
       };
     }
+
     if (value < 20) {
       return {
         label: "Moderate",
@@ -74,8 +58,26 @@ const getCardStatus = (
         description: `${expenseRatio?.toFixed(0)}% spent`,
       };
     }
-  
-    // Good savings rate
+
+    // High savings → check if expense ratio is unusually high for warning
+    if (expenseRatio && expenseRatio > 75) {
+      return {
+        label: "High Spend",
+        color: "text-red-400",
+        Icon: TrendingDownIcon,
+        description: `${expenseRatio.toFixed(0)}% spent`,
+      };
+    }
+
+    if (expenseRatio && expenseRatio > 60) {
+      return {
+        label: "Warning: High Spend",
+        color: "text-orange-400",
+        Icon: TrendingDownIcon,
+        description: `${expenseRatio.toFixed(0)}% spent`,
+      };
+    }
+
     return {
       label: "Good Savings",
       color: "text-green-400",
@@ -239,8 +241,9 @@ const SummaryCard: FC<SummaryCardProps> = ({
                   ) : (
                     <TrendingDownIcon className="size-3" />
                   )}
+{/*                   Math.abs(percentageChange || 0) */}
                   <span>
-                    {formatPercentage(Math.abs(percentageChange || 0), {
+                    {formatPercentage(percentageChange || 0, {
                       showSign: percentageChange !== 0,
                       isExpense: cardType === "expenses",
                       decimalPlaces: 1,
