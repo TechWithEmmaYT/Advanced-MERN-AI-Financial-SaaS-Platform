@@ -56,14 +56,14 @@ const Billing = () => {
           </p>
 
           <p className="text-base font-medium">
-            🔓 <span className="text-green-600">Get instant access now:</span>
-            <a
+            🔓 <span className="text-green-600">Get it here:</span>
+             <a
               className="text-blue-500 underline ml-1"
-              href="https://bitly.com/techwithemma"
+              href="https://tinyurl.com/extended-stripe-integration "
               target="_blank"
               rel="noopener noreferrer"
             >
-              https://bitly.com/techwithemma
+              Click Here
             </a>
           </p>
           <br />
